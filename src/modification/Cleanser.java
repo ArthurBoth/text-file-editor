@@ -1,12 +1,14 @@
+package modification;
+
 import io.IO;
-import io.PathConstants;
+import constants.FolderPaths;
 
 import java.io.File;
 
 public interface Cleanser {
-    public static void clearFile(String fileName, String regEx) {
-        String path = PathConstants.INPUT_FOLDER_PATH + fileName;
-        String newPath = PathConstants.OUTPUT_FOLDER_PATH + fileName;
+    public static void clearFile(String fileName, ModifierType regEx) {
+        String path = FolderPaths.INPUT_FOLDER + fileName;
+        String newPath = FolderPaths.OUTPUT_FOLDER + fileName;
         String text;
 
         verifyFolders();
@@ -14,15 +16,15 @@ public interface Cleanser {
 
         if (text.isEmpty()) return;
         
-        text = text.replaceAll(regEx, "");
+        text = regEx.modify(text);
 
         if (IO.write(newPath, text)) {
             System.out.println("Success! The new file is in " + newPath);
         }
     }
 
-    public static void clearFolder(String regEx) {
-        File folder = new File(PathConstants.INPUT_FOLDER_PATH);
+    public static void clearFolder(ModifierType  regEx) {
+        File folder = new File(FolderPaths.INPUT_FOLDER);
         File[] files = folder.listFiles();
 
         for (File file : files) {
@@ -33,8 +35,8 @@ public interface Cleanser {
     }
 
     private static void verifyFolders() {
-        File inputFolder = new File(PathConstants.INPUT_FOLDER_PATH);
-        File outputFolder = new File(PathConstants.OUTPUT_FOLDER_PATH);
+        File inputFolder = new File(FolderPaths.INPUT_FOLDER);
+        File outputFolder = new File(FolderPaths.OUTPUT_FOLDER);
 
         if (!inputFolder.exists()) {
             inputFolder.mkdir();
