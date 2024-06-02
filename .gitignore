@@ -23,5 +23,9 @@
 hs_err_pid*
 replay_pid*
 
-# Affected Files #
+# Affected Files
 *.txt
+
+# I/O Directories
+.Input/
+.Output/
