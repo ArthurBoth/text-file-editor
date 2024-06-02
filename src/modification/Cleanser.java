@@ -1,6 +1,6 @@
 package modification;
 
-import io.IO;
+import io.FileIO;
 import constants.FolderPaths;
 
 import java.io.File;
@@ -12,15 +12,13 @@ public interface Cleanser {
         String text;
 
         verifyFolders();
-        text = IO.read(path);
+        text = FileIO.read(path);
 
         if (text.isEmpty()) return;
         
         text = regEx.modify(text);
 
-        if (IO.write(newPath, text)) {
-            System.out.println("Success! The new file is in " + newPath);
-        }
+        FileIO.write(newPath, text);
     }
 
     public static void clearFolder(ModifierType  regEx) {
