@@ -5,10 +5,14 @@ public interface Cleanser {
         String text;
 
         text = IO.read(path);
+
+        if (text.isEmpty()) return;
+        
         text = text.replaceAll(regEx, "");
         newPath = path.replace(".txt", "_clean.txt");
 
-        IO.write(newPath, text);
-        System.out.println("Success! The new file is in " + newPath);
+        if (IO.write(newPath, text)) {
+            System.out.println("Success! The new file is in " + newPath);
+        }
     }
 }

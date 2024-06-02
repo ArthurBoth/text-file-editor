@@ -25,18 +25,18 @@ public interface IO {
         } catch (IOException e) {
             System.out.println("An error occurred. (reading)");
             e.printStackTrace();
-            System.exit(-1);
+            return "";
         }
 
         if ((content.length() == 0)) {
             System.out.println("The file is empty.");
-            System.exit(-1);
+            return "";
         }
 
         return content.toString();
     }
     
-    public static void write(String path, String content) {
+    public static boolean write(String path, String content) {
         try {
             FileWriter fileWriter = new FileWriter(path);
 
@@ -46,10 +46,11 @@ public interface IO {
 
             bufferedWriter.close();
             
+            return true;
         } catch (IOException e) {
             System.out.println("An error occurred. (writing)");
             e.printStackTrace();
-            System.exit(-1);
+            return false;
         }
     }
 }
