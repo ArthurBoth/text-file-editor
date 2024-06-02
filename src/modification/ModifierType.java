@@ -1,6 +1,7 @@
 package modification;
 
 import constants.RegEx;
+import constants.ConfigConstants;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -40,7 +41,7 @@ public enum ModifierType {
     REPLACE_EXTENSION {
         @Override
         public String modify(String text) {
-            return text.replaceFirst(RegEx.FILE_EXTENSION, ".txt");
+            return text.replaceFirst(RegEx.FILE_EXTENSION, ConfigConstants.RESULT_EXTENSION);
         }
     };
 
