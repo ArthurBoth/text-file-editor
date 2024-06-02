@@ -26,6 +26,12 @@ replay_pid*
 # Affected Files
 *.txt
 
-# I/O Directories
-.Input/
-.Output/
+# Ignore all files in the Input and Output folders
+.Input/*
+.Output/*
+
+# Don't ignore the Input and Output folders themselves
+!.Input/
+!.Input/.gitkeep
+!.Output/
+!.Output/.gitkeep
