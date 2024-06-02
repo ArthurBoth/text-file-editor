@@ -36,6 +36,12 @@ public enum ModifierType {
 
             return text;
         }
+    },
+    REPLACE_EXTENSION {
+        @Override
+        public String modify(String text) {
+            return text.replaceFirst(RegEx.FILE_EXTENSION, ".txt");
+        }
     };
 
     public abstract String modify(String text);
