@@ -23,5 +23,15 @@
 hs_err_pid*
 replay_pid*
 
-# Affected Files #
+# Affected Files
 *.txt
+
+# Ignore all files inside the I/O folders
+.Input/*
+.Output/*
+
+# Don't ignore the I/O folders themselves
+!.Input/
+!.Input/.gitkeep
+!.Output/
+!.Output/.gitkeep
