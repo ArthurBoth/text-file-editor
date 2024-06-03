@@ -24,7 +24,7 @@ public class FileIO {
 
         } catch (IOException e) {
             ConsoleLogger.logError("An error occurred. (reading)", e);
-            return "";
+            return null;
         }
         if ((content.length() == 0)) {
             ConsoleLogger.log("The file is empty.");

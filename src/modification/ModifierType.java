@@ -63,6 +63,6 @@ public enum ModifierType {
     }
 
     private static String removeBeginningGap(String text) {
-        return text.replaceFirst(RegEx.NEW_LINE + "+", "");
+        return text.replaceFirst(RegEx.MULTIPLE_EMPTY_LINES, "");
     }
 }
