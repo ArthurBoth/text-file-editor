@@ -27,7 +27,7 @@ public class FileIO {
             return "";
         }
         if ((content.length() == 0)) {
-            ConsoleLogger.logError("The file is empty.");
+            ConsoleLogger.log("The file is empty.");
             return "";
         }
 

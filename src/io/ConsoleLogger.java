@@ -1,5 +1,7 @@
 package io;
 
+import static constants.ConfigConstants.PRINT_LOGS;
+
 public class ConsoleLogger {
 
     @SuppressWarnings("unused")
@@ -20,24 +22,30 @@ public class ConsoleLogger {
     }
 
     public static void log(String message) {
-        System.out.print(Colours.CYAN);
-        System.out.print(message);
-        System.out.println(Colours.RESET);
+        if (PRINT_LOGS) {
+            System.out.print(Colours.GREEN);
+            System.out.print(message);
+            System.out.println(Colours.RESET);
+        }
     }
     
     public static void logError(String message, Exception e) {
-        System.out.println(Colours.RED);
-        System.err.printf("ERROR: %s%n", message);
+        if (PRINT_LOGS) {
+            System.out.println(Colours.RED);
+            System.err.printf("ERROR: %s%n", message);
 
-        System.out.print(Colours.YELLOW);
-        e.printStackTrace();
-        System.out.print(Colours.RESET);
+            System.out.print(Colours.YELLOW);
+            e.printStackTrace();
+            System.out.print(Colours.RESET);
+        }
     }
 
     public static void logError(String message) {
-        System.out.print(Colours.CYAN);
-        System.err.printf("ERROR: %s", message);
-        System.out.println(Colours.RESET);
+        if (PRINT_LOGS) {
+            System.out.print(Colours.RED);
+            System.err.printf("ERROR: %s", message);
+            System.out.println(Colours.RESET);
+        }
     }
 
     private ConsoleLogger() {
