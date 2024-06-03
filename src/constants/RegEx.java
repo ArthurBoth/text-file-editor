@@ -10,7 +10,8 @@ public class RegEx {
     public static final String REGEX_BOUNDARY = "\\b";
     public static final String FILE_EXTENSION = "\\.\\w+$";
 
-    public static final Set<String> BAD_WORDS = Set.of("fuck", "fucking", "fucked");
+    public static final Set<String> BAD_WORDS = Set.of(
+        "fuck", "fucking", "fucked", "fucks");
     
     private RegEx() {
         throw new IllegalStateException("Utility class");
