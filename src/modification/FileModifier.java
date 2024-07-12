@@ -13,7 +13,7 @@ public interface FileModifier {
         String newPath = ConfigConstants.OUTPUT_FOLDER + ModifierType.REPLACE_EXTENSION.modify(fileName);
         String text;
 
-        verifyFolders();
+        FileIO.verifyFolders(ConfigConstants.INPUT_FOLDER, ConfigConstants.OUTPUT_FOLDER);
         text = FileIO.read(path);
 
         if(text == null) return;
@@ -37,7 +37,7 @@ public interface FileModifier {
     public static void renameFile(String fileName, ModifierType type) {
         if (fileName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
         
-        verifyFolders();
+        FileIO.verifyFolders(ConfigConstants.INPUT_FOLDER, ConfigConstants.OUTPUT_FOLDER);
         String text = FileIO.read(ConfigConstants.INPUT_FOLDER + fileName);
         String newPath = ConfigConstants.OUTPUT_FOLDER + type.modify(fileName);
 
@@ -47,7 +47,7 @@ public interface FileModifier {
     }
 
     public static void renameFile(String oldFileName, String newFileName) {
-        verifyFolders();
+        FileIO.verifyFolders(ConfigConstants.INPUT_FOLDER, ConfigConstants.OUTPUT_FOLDER);
         String text = FileIO.read(ConfigConstants.INPUT_FOLDER + oldFileName);
         String newPath = ConfigConstants.OUTPUT_FOLDER + newFileName;
 
@@ -65,19 +65,6 @@ public interface FileModifier {
             if (file.isFile()) {
                 renameFile(file.getName(), type);
             }
-        }
-    }
-
-    private static void verifyFolders() {
-        File inputFolder = new File(ConfigConstants.INPUT_FOLDER);
-        File outputFolder = new File(ConfigConstants.OUTPUT_FOLDER);
-
-        if (!inputFolder.exists()) {
-            inputFolder.mkdir();
-        }
-
-        if (!outputFolder.exists()) {
-            outputFolder.mkdir();
         }
     }
 }
