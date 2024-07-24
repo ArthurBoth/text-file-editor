@@ -53,7 +53,7 @@ public class FileIO {
         }
     }
 
-    public static String readLine(String path, int index) {
+    public static String readLine(String path, int skip) {
         String line;
 
         try {
@@ -61,7 +61,7 @@ public class FileIO {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             // Skip lines
-            for (int i = 0; i < index; i++) {
+            for (int i = 0; i < skip; i++) {
                 bufferedReader.readLine();
             }
             
@@ -103,6 +103,6 @@ public class FileIO {
     }
 
     private FileIO() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException(StringConstants.UTILITY_CLASS);
     }
 }

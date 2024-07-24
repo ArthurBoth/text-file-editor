@@ -1,61 +1,65 @@
 package modification;
 
-import io.FileIO;
+import constants.StringConstants;
 import constants.ConfigConstants;
 
 import java.io.File;
 
-public interface FileModifier {
-    public static void modifyContentOfFile(String fileName, ModifierType regEx) {
-        if (fileName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
+public abstract class FileModifier {
+    private static Modifier memory = new ModifierMemory();
+    private static Modifier memoryless = new ModifierMemoryless();
 
-        String path = ConfigConstants.INPUT_FOLDER + fileName;
-        String newPath = ConfigConstants.OUTPUT_FOLDER + ModifierType.REPLACE_EXTENSION.modify(fileName);
-        String text;
-
-        FileIO.verifyFolders(ConfigConstants.INPUT_FOLDER, ConfigConstants.OUTPUT_FOLDER);
-        text = FileIO.read(path);
-
-        if(text == null) return;
-
-        text = regEx.modify(text);
-
-        FileIO.write(newPath, text);
+    public static void modifyContentOfFile(String fileName, ModifierType type, boolean memorylessOperation) {
+        if (memorylessOperation) {
+            memoryless.modifyContentOfFile(fileName, type);
+        } else {
+            memory.modifyContentOfFile(fileName, type);
+        }
     }
 
-    public static void modifyContentOfAllFiles(ModifierType  regEx) {
+    public static void modifyContentOfFile(String fileName, ModifierType type) {
+        modifyContentOfFile(fileName, type, false);
+    }
+
+    public static void modifyContentOfAllFiles(ModifierType  type) {
         File folder = new File(ConfigConstants.INPUT_FOLDER);
         File[] files = folder.listFiles();
 
         for (File file : files) {
             if (file.isFile()) {
-                modifyContentOfFile(file.getName(), regEx);
+                modifyContentOfFile(file.getName(), type, false);
+            }
+        }
+    }
+    public static void modifyContentOfAllFiles(ModifierType  type, boolean memorylessOperations) {
+        File folder = new File(ConfigConstants.INPUT_FOLDER);
+        File[] files = folder.listFiles();
+
+        for (File file : files) {
+            if (file.isFile()) {
+                modifyContentOfFile(file.getName(), type, memorylessOperations);
             }
         }
     }
 
-    public static void renameFile(String fileName, ModifierType type) {
-        if (fileName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
-        
-        FileIO.verifyFolders(ConfigConstants.INPUT_FOLDER, ConfigConstants.OUTPUT_FOLDER);
-        String text = FileIO.read(ConfigConstants.INPUT_FOLDER + fileName);
-        String newPath = ConfigConstants.OUTPUT_FOLDER + type.modify(fileName);
-
-        if (text == null) return;
-
-        FileIO.write(newPath, text);
+    public static void renameFile(String oldName, String newName, boolean memorylessOperation) {
+        if (memorylessOperation) {
+            memoryless.renameFile(oldName, newName);
+        } else {
+            memory.renameFile(oldName, newName);
+        }
+    }
+    public static void renameFile(String oldName, String newName) {
+        renameFile(oldName, newName, false);
     }
 
-    public static void renameFile(String oldFileName, String newFileName) {
-        FileIO.verifyFolders(ConfigConstants.INPUT_FOLDER, ConfigConstants.OUTPUT_FOLDER);
-        String text = FileIO.read(ConfigConstants.INPUT_FOLDER + oldFileName);
-        String newPath = ConfigConstants.OUTPUT_FOLDER + newFileName;
-
-        if (text == null) return;
-
-        FileIO.write(newPath, text);
+    public static void renameFile(String fileName, ModifierType type, boolean memorylessOperation) {
+        if (memorylessOperation) {
+            memoryless.renameFile(fileName, type);
+        } else {
+            memory.renameFile(fileName, type);
+        }
     }
-    
 
     public static void renameAllFiles(ModifierType type) {
         File folder = new File(ConfigConstants.INPUT_FOLDER);
@@ -63,8 +67,23 @@ public interface FileModifier {
 
         for (File file : files) {
             if (file.isFile()) {
-                renameFile(file.getName(), type);
+                renameFile(file.getName(), type, false);
             }
         }
+    }
+
+    public static void renameAllFiles(ModifierType type, boolean memorylessOperations) {
+        File folder = new File(ConfigConstants.INPUT_FOLDER);
+        File[] files = folder.listFiles();
+
+        for (File file : files) {
+            if (file.isFile()) {
+                renameFile(file.getName(), type, memorylessOperations);
+            }
+        }
+    }
+
+    private FileModifier() {
+        throw new IllegalStateException(StringConstants.UTILITY_CLASS);
     }
 }

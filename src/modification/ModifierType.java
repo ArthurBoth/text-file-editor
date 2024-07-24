@@ -43,6 +43,12 @@ public enum ModifierType {
         public String modify(String text) {
             return text.replaceFirst(RegEx.FILE_EXTENSION, ConfigConstants.RESULT_EXTENSION);
         }
+    },
+    REMOVE_DATE_TIME {
+        @Override
+        public String modify(String text) {
+            return text.replaceAll(RegEx.DATE_TIME_ISO8601, "");
+        }
     };
 
     public abstract String modify(String text);

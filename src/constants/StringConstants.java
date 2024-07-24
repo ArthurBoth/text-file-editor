@@ -12,6 +12,6 @@ public class StringConstants {
     public static final String UTILITY_CLASS    = "Utility class";
     
     private StringConstants() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException(UTILITY_CLASS);
     }
 }
