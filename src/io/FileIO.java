@@ -31,7 +31,7 @@ public class FileIO {
             return null;
         }
         if ((content.length() == 0)) {
-            ConsoleLogger.log(StringConstants.EMPTY_FILE);
+            ConsoleLogger.logGreen(StringConstants.EMPTY_FILE);
             return "";
         }
 
@@ -46,7 +46,7 @@ public class FileIO {
             bufferedWriter.write(content);
             bufferedWriter.close();
 
-            ConsoleLogger.log(String.format("%s {%s}", StringConstants.SUCCESS, path));
+            ConsoleLogger.logGreen(String.format("%s {%s}", StringConstants.SUCCESS, path));
 
         } catch (IOException e) {
             ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_WRITING, e);

@@ -83,6 +83,22 @@ public abstract class FileModifier {
         }
     }
 
+    public void compareFiles(String file1, String file2, boolean memorylessOperation, boolean ignoreDateTime) {
+        if (memorylessOperation) {
+            memoryless.compareFiles(file1, file2, ignoreDateTime); 
+        } else {
+            memory.compareFiles(file1, file2, ignoreDateTime);
+        }
+    }
+
+    public void compareFiles(String file1, String file2, boolean memorylessOperation) {
+        compareFiles(file1, file2, memorylessOperation, ConfigConstants.IGNORE_DATE_TIME_WHEN_COMPARING_FILES);
+    }
+
+    public void compareFiles(String file1, String file2) {
+        compareFiles(file1, file2, true);
+    }
+
     private FileModifier() {
         throw new IllegalStateException(StringConstants.UTILITY_CLASS);
     }
