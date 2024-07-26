@@ -8,7 +8,12 @@ public class ConfigConstants {
     public static final String OUTPUT_FOLDER    = "./.Output/";
     public static final String OUTPUT_FILE      = String.format("_Output File_%s", RESULT_EXTENSION);
 
-    public static final boolean IGNORE_DATE_TIME_WHEN_COMPARING_FILES = true;
+    // Code configurations
+    public static final boolean DEFAULT_MEMORYLESS_OPERATION_MODIFY_CONTENT     = false;
+    public static final boolean DEFAULT_MEMORYLESS_OPERATION_RENAME_FILE        = false;
+    public static final boolean DEFAULT_MEMORYLESS_OPERATION_COMPARE_FILES      = true;
+    
+    public static final boolean DEFAULT_IGNORE_DATE_TIME_WHEN_COMPARING_FILES   = true;
 
     // Logging configurations
     public static final boolean PRINT_LOGS = true;

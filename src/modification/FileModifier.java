@@ -21,7 +21,7 @@ public abstract class FileModifier {
     }
 
     public static void modifyContentOfFile(String fileName, ModifierType type) {
-        modifyContentOfFile(fileName, type, false);
+        modifyContentOfFile(fileName, type, ConfigConstants.DEFAULT_MEMORYLESS_OPERATION_MODIFY_CONTENT);
     }
 
     public static void modifyContentOfAllFiles(ModifierType  type) {
@@ -30,7 +30,7 @@ public abstract class FileModifier {
 
         for (File file : files) {
             if (file.isFile()) {
-                modifyContentOfFile(file.getName(), type, false);
+                modifyContentOfFile(file.getName(), type, ConfigConstants.DEFAULT_MEMORYLESS_OPERATION_MODIFY_CONTENT);
             }
         }
     }
@@ -57,7 +57,7 @@ public abstract class FileModifier {
         }
     }
     public static void renameFile(String oldName, String newName) {
-        renameFile(oldName, newName, false);
+        renameFile(oldName, newName, ConfigConstants.DEFAULT_MEMORYLESS_OPERATION_RENAME_FILE);
     }
 
     public static void renameFile(String fileName, ModifierType type, boolean memorylessOperation) {
@@ -77,7 +77,7 @@ public abstract class FileModifier {
 
         for (File file : files) {
             if (file.isFile()) {
-                renameFile(file.getName(), type, false);
+                renameFile(file.getName(), type, ConfigConstants.DEFAULT_MEMORYLESS_OPERATION_RENAME_FILE);
             }
         }
     }
@@ -106,11 +106,11 @@ public abstract class FileModifier {
     }
 
     public static void compareFiles(String file1, String file2, boolean memorylessOperation) {
-        compareFiles(file1, file2, memorylessOperation, ConfigConstants.IGNORE_DATE_TIME_WHEN_COMPARING_FILES);
+        compareFiles(file1, file2, memorylessOperation, ConfigConstants.DEFAULT_MEMORYLESS_OPERATION_COMPARE_FILES);
     }
 
     public static void compareFiles(String file1, String file2) {
-        compareFiles(file1, file2, true);
+        compareFiles(file1, file2, ConfigConstants.DEFAULT_MEMORYLESS_OPERATION_COMPARE_FILES);
     }
 
     private static void verifyFolders() {
