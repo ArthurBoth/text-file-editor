@@ -1,14 +1,13 @@
 package io;
 
+import constants.RegEx;
+import constants.StringConstants;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import constants.RegEx;
-import constants.StringConstants;
 
 public class FileIO {
     public static String read(String path) {
@@ -86,19 +85,6 @@ public class FileIO {
             
         } catch (IOException e) {
             ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_WRITING, e);
-        }
-    }
-    
-    public static void verifyFolders(String input, String output) {
-        File inputFolder = new File(input);
-        File outputFolder = new File(output);
-
-        if (!inputFolder.exists()) {
-            inputFolder.mkdir();
-        }
-
-        if (!outputFolder.exists()) {
-            outputFolder.mkdir();
         }
     }
 

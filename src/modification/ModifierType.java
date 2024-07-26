@@ -44,10 +44,10 @@ public enum ModifierType {
             return text.replaceFirst(RegEx.FILE_EXTENSION, ConfigConstants.RESULT_EXTENSION);
         }
     },
-    REMOVE_DATE_TIME {
+    REMOVE_TIME {
         @Override
         public String modify(String text) {
-            return text.replaceAll(RegEx.DATE_TIME_ISO8601, "");
+            return text.replaceAll(RegEx.TIME_ISO8601, "");
         }
     },
     REMOVE_ALL_DATE_TIME {

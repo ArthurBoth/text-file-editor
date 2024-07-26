@@ -10,6 +10,9 @@ public abstract class FileModifier {
     private static Modifier memoryless = new ModifierMemoryless();
 
     public static void modifyContentOfFile(String fileName, ModifierType type, boolean memorylessOperation) {
+        if (fileName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
+        verifyFolders();
+        
         if (memorylessOperation) {
             memoryless.modifyContentOfFile(fileName, type);
         } else {
@@ -43,6 +46,10 @@ public abstract class FileModifier {
     }
 
     public static void renameFile(String oldName, String newName, boolean memorylessOperation) {
+        if (oldName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
+        if (newName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
+        verifyFolders();
+
         if (memorylessOperation) {
             memoryless.renameFile(oldName, newName);
         } else {
@@ -54,6 +61,9 @@ public abstract class FileModifier {
     }
 
     public static void renameFile(String fileName, ModifierType type, boolean memorylessOperation) {
+        if (fileName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
+        verifyFolders();
+
         if (memorylessOperation) {
             memoryless.renameFile(fileName, type);
         } else {
@@ -83,7 +93,11 @@ public abstract class FileModifier {
         }
     }
 
-    public void compareFiles(String file1, String file2, boolean memorylessOperation, boolean ignoreDateTime) {
+    public static void compareFiles(String file1, String file2, boolean memorylessOperation, boolean ignoreDateTime) {
+        if (file1.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
+        if (file2.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
+        verifyFolders();
+
         if (memorylessOperation) {
             memoryless.compareFiles(file1, file2, ignoreDateTime); 
         } else {
@@ -91,12 +105,25 @@ public abstract class FileModifier {
         }
     }
 
-    public void compareFiles(String file1, String file2, boolean memorylessOperation) {
+    public static void compareFiles(String file1, String file2, boolean memorylessOperation) {
         compareFiles(file1, file2, memorylessOperation, ConfigConstants.IGNORE_DATE_TIME_WHEN_COMPARING_FILES);
     }
 
-    public void compareFiles(String file1, String file2) {
+    public static void compareFiles(String file1, String file2) {
         compareFiles(file1, file2, true);
+    }
+
+    private static void verifyFolders() {
+        File inputFolder = new File(ConfigConstants.INPUT_FOLDER);
+        File outputFolder = new File(ConfigConstants.OUTPUT_FOLDER);
+
+        if (!inputFolder.exists()) {
+            inputFolder.mkdir();
+        }
+
+        if (!outputFolder.exists()) {
+            outputFolder.mkdir();
+        }
     }
 
     private FileModifier() {
