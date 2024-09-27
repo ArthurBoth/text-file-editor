@@ -2,7 +2,7 @@ package constants;
 
 public class ConfigConstants {
     // Files configurations
-    public static final String RESULT_EXTENSION = ".txt";
+    public static final String RESULT_EXTENSION = ".csv";
     public static final String GIT_KEEP         = ".gitkeep";
     public static final String INPUT_FOLDER     = "./.Input/";
     public static final String OUTPUT_FOLDER    = "./.Output/";

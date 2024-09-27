@@ -27,7 +27,7 @@ public class ModifierMemoryless extends Modifier {
         
         while (line != null) {
             line = FileIO.readLine(inputPath, index++);
-            line = type.modify(line);
+            line = String.format("%s%n", type.modify(line));
             FileIO.writeLine(outputPath, line);
         }
         ConsoleLogger.logGreen(String.format("%s {%s}", StringConstants.SUCCESS, outputPath));
@@ -70,16 +70,12 @@ public class ModifierMemoryless extends Modifier {
     
     private void compareFiles(String inputPath1, String inputPath2, String outputPath, boolean ignoreDateTime) {
         boolean foundDifference = false;
-        int differenceNumber = 1;
+        int differenceNumber = 0;
         int index = 0;
         String line1 = FileIO.readLine(inputPath1, index);
-        String line2 = FileIO.readLine(inputPath1, index);
+        String line2 = FileIO.readLine(inputPath2, index);
 
         while ((line1 != null) && (line2 != null)) {
-            index++;
-            line1 = FileIO.readLine(inputPath1, index);
-            line2 = FileIO.readLine(inputPath1, index);
-
             if (ignoreDateTime) {
                 line1 = ModifierType.REMOVE_ALL_DATE_TIME.modify(line1);
                 line2 = ModifierType.REMOVE_ALL_DATE_TIME.modify(line2);
@@ -87,11 +83,15 @@ public class ModifierMemoryless extends Modifier {
 
             if (!(line1.equals(line2))) {
                 foundDifference = true;
-                ConsoleLogger.logWhite(String.format("%s %d", StringConstants.DIFFERENCE_FOUND_LINE, index));
-                FileIO.writeLine(outputPath, StringConstants.FILE_DIFFERENCE(differenceNumber++));
-                FileIO.writeLine(outputPath, line1);
-                FileIO.writeLine(outputPath, line2);
+                ConsoleLogger.logWhite(String.format("%s %d%n", StringConstants.DIFFERENCE_FOUND_LINE, index));
+                FileIO.writeLine(outputPath, StringConstants.FILE_DIFFERENCE(++differenceNumber, index));
+                FileIO.writeLine(outputPath, String.format("%s%n",line1));
+                FileIO.writeLine(outputPath, String.format("%s%n",line2));
             }
+            
+            index++;
+            line1 = FileIO.readLine(inputPath1, index);
+            line2 = FileIO.readLine(inputPath2, index);
         }
 
         if (foundDifference) {

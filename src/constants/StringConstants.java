@@ -15,8 +15,8 @@ public class StringConstants {
     // Auxiliaries
     public static final String UTILITY_CLASS    = "Utility class";
 
-    public static String FILE_DIFFERENCE(int number) {
-        return String.format("[Difference %d]", number);
+    public static String FILE_DIFFERENCE(int index, int line) {
+        return String.format("[Difference %d in line %d]%n", index, line);
     }
     
     private StringConstants() {

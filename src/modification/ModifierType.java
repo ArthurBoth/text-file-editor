@@ -53,9 +53,17 @@ public enum ModifierType {
     REMOVE_ALL_DATE_TIME {
         @Override
         public String modify(String text) {
-            text.replaceAll(RegEx.DATE_TIME_ISO8601, "");
-            text.replaceAll(RegEx.DATE_ISO8601, "");
-            text.replaceAll(RegEx.TIME_ISO8601, "");
+            text = text.replaceAll(RegEx.DATE_TIME_ISO8601, "");
+            text = text.replaceAll(RegEx.DATE_ISO8601, "");
+            text = text.replaceAll(RegEx.TIME_ISO8601, "");
+            return text;
+        }
+    },
+    REPLACE_SEMICOLON_CSV_DELIMITER {
+        @Override
+        public String modify(String text) {
+            text = text.replace(",",".");
+            text = text.replace(";",",");
             return text;
         }
     };
