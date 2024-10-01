@@ -45,30 +45,25 @@ public abstract class FileModifier {
         }
     }
 
-    public static void renameFile(String oldName, String newName, boolean memorylessOperation) {
+    public static void renameFile(String oldName, String newName) {
         if (oldName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
         if (newName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
         verifyFolders();
 
-        if (memorylessOperation) {
-            memoryless.renameFile(oldName, newName);
-        } else {
-            memory.renameFile(oldName, newName);
-        }
-    }
-    public static void renameFile(String oldName, String newName) {
-        renameFile(oldName, newName, ConfigConstants.DEFAULT_MEMORYLESS_OPERATION_RENAME_FILE);
+        File oldFile = new File(ConfigConstants.INPUT_FOLDER + oldName);
+        File newFile = new File(ConfigConstants.OUTPUT_FOLDER + newName);
+
+        oldFile.renameTo(newFile);
     }
 
-    public static void renameFile(String fileName, ModifierType type, boolean memorylessOperation) {
+    public static void renameFile(String fileName, ModifierType type) {
         if (fileName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
         verifyFolders();
 
-        if (memorylessOperation) {
-            memoryless.renameFile(fileName, type);
-        } else {
-            memory.renameFile(fileName, type);
-        }
+        File oldFile = new File(ConfigConstants.INPUT_FOLDER + fileName);
+        File newFile = new File(ConfigConstants.OUTPUT_FOLDER + type.modify(fileName));
+
+        oldFile.renameTo(newFile);
     }
 
     public static void renameAllFiles(ModifierType type) {
@@ -77,18 +72,7 @@ public abstract class FileModifier {
 
         for (File file : files) {
             if (file.isFile()) {
-                renameFile(file.getName(), type, ConfigConstants.DEFAULT_MEMORYLESS_OPERATION_RENAME_FILE);
-            }
-        }
-    }
-
-    public static void renameAllFiles(ModifierType type, boolean memorylessOperations) {
-        File folder = new File(ConfigConstants.INPUT_FOLDER);
-        File[] files = folder.listFiles();
-
-        for (File file : files) {
-            if (file.isFile()) {
-                renameFile(file.getName(), type, memorylessOperations);
+                renameFile(file.getName(), type);
             }
         }
     }
@@ -106,7 +90,7 @@ public abstract class FileModifier {
     }
 
     public static void compareFiles(String file1, String file2, boolean memorylessOperation) {
-        compareFiles(file1, file2, memorylessOperation, ConfigConstants.DEFAULT_MEMORYLESS_OPERATION_COMPARE_FILES);
+        compareFiles(file1, file2, memorylessOperation, ConfigConstants.DEFAULT_IGNORE_DATE_TIME_WHEN_COMPARING_FILES);
     }
 
     public static void compareFiles(String file1, String file2) {

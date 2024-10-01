@@ -10,7 +10,6 @@ public class ConfigConstants {
 
     // Code configurations
     public static final boolean DEFAULT_MEMORYLESS_OPERATION_MODIFY_CONTENT     = false;
-    public static final boolean DEFAULT_MEMORYLESS_OPERATION_RENAME_FILE        = false;
     public static final boolean DEFAULT_MEMORYLESS_OPERATION_COMPARE_FILES      = true;
     
     public static final boolean DEFAULT_IGNORE_DATE_TIME_WHEN_COMPARING_FILES   = true;

@@ -5,7 +5,7 @@ import static modification.ModifierType.CENSOR;
 import static modification.ModifierType.REPLACE_EXTENSION;
 import static modification.ModifierType.REMOVE_TIME;
 import static modification.ModifierType.REMOVE_ALL_DATE_TIME;
-import static modification.ModifierType.REPLACE_SEMICOLON_CSV_DELIMITER;;
+import static modification.ModifierType.REPLACE_SEMICOLON_CSV_DELIMITER;
 
 @SuppressWarnings("unused")
 public class App{

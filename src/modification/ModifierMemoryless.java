@@ -33,33 +33,6 @@ public class ModifierMemoryless extends Modifier {
         ConsoleLogger.logGreen(String.format("%s {%s}", StringConstants.SUCCESS, outputPath));
     }
 
-    @Override
-    public void renameFile(String fileName, ModifierType type) {
-        String inputPath = ConfigConstants.INPUT_FOLDER + fileName;
-        String outputPath = ConfigConstants.OUTPUT_FOLDER + type.modify(fileName);
-
-        copyFile(inputPath, outputPath);
-    }
-
-    @Override
-    public void renameFile(String oldFileName, String newFileName) {
-        String inputPath = ConfigConstants.INPUT_FOLDER + oldFileName;
-        String outputPath = ConfigConstants.OUTPUT_FOLDER + newFileName;
-        
-        copyFile(inputPath, outputPath);
-    }
-
-    private void copyFile(String inputPath, String outputPath) {
-        int index = 0;
-        String line = FileIO.readLine(inputPath, index++);
-        
-        while (line != null) {
-            line = FileIO.readLine(inputPath, index++);
-            FileIO.writeLine(outputPath, line);
-        }
-        ConsoleLogger.logGreen(String.format("%s {%s}", StringConstants.SUCCESS, outputPath));
-    }
-
     public void compareFiles(String file1, String file2, boolean ignoreDateTime) {
         String inputPathFile1 = ConfigConstants.INPUT_FOLDER + file1;
         String inputPathFile2 = ConfigConstants.INPUT_FOLDER + file2;

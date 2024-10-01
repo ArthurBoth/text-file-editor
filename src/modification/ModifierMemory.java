@@ -24,26 +24,6 @@ public class ModifierMemory extends Modifier{
     }
 
     @Override
-    public void renameFile(String fileName, ModifierType type) {
-        String text = FileIO.read(ConfigConstants.INPUT_FOLDER + fileName);
-        String newPath = ConfigConstants.OUTPUT_FOLDER + type.modify(fileName);
-
-        if (text == null) return;
-
-        FileIO.write(newPath, text);
-    }
-
-    @Override
-    public void renameFile(String oldFileName, String newFileName) {
-        String text = FileIO.read(ConfigConstants.INPUT_FOLDER + oldFileName);
-        String newPath = ConfigConstants.OUTPUT_FOLDER + newFileName;
-
-        if (text == null) return;
-
-        FileIO.write(newPath, text);
-    }
-
-    @Override
     public void compareFiles(String file1, String file2, boolean ignoreDateTime) {
         String text1 = FileIO.read(ConfigConstants.INPUT_FOLDER + file1);
         String text2 = FileIO.read(ConfigConstants.INPUT_FOLDER + file2);
