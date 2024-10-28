@@ -1,13 +1,17 @@
 package io;
 
+import constants.ConfigConstants;
 import constants.RegEx;
 import constants.StringConstants;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class FileIO {
     public static String read(String path) {
@@ -85,6 +89,40 @@ public class FileIO {
             
         } catch (IOException e) {
             ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_WRITING, e);
+        }
+    }
+
+    public static void partitionFile(String fileName, String outputPath, long sizeOfChunkMB) {
+        String fileNameWithoutExtension = fileName.replaceFirst(RegEx.FILE_EXTENSION, "");
+        String line;
+        String newFileName;
+        int newfileSize;
+        int fileCounter = 0;
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
+            line = bufferedReader.readLine();
+            while (line != null) {
+                newFileName = String.format("%s%s-%03d%s", 
+                                            ConfigConstants.OUTPUT_FOLDER,
+                                            fileNameWithoutExtension, 
+                                            ++fileCounter, 
+                                            ConfigConstants.RESULT_EXTENSION);
+
+                try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(newFileName))) {
+                    newfileSize = 0;
+                    while (line != null) {
+                        byte[] bytes = (line + System.lineSeparator()).getBytes(ConfigConstants.DEFAULT_CHARSET);
+                        if (newfileSize + bytes.length > (sizeOfChunkMB * 1024 * 1024)) {
+                            break;
+                        }
+                        outputStream.write(bytes);
+                        newfileSize += bytes.length;
+                        line = bufferedReader.readLine();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_PARTITIONING, e);
         }
     }
 

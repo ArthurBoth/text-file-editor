@@ -110,7 +110,17 @@ public abstract class FileModifier {
         }
     }
 
-    private FileModifier() {
+    public static void partitionFile(String fileName) {
+        partitionFile(fileName, ConfigConstants.DEFAULT_PARTITION_SIZE_MB);
+    }
+
+    public static void partitionFile(String fileName, long sizeOfChunkMB) {
+        String filePath = String.format("%s%s", ConfigConstants.INPUT_FOLDER, fileName);
+        Modifier.partitionFile(filePath, ConfigConstants.OUTPUT_FOLDER, sizeOfChunkMB);
+    }
+
+     private FileModifier() {
         throw new IllegalStateException(StringConstants.UTILITY_CLASS);
     }
+
 }

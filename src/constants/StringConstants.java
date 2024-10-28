@@ -5,6 +5,7 @@ public class StringConstants {
     public static final String ERROR_MSG                        = "An error occurred. ";
     public static final String WHEN_READING                     = "(reading)";
     public static final String WHEN_WRITING                     = "(writing)";
+    public static final String WHEN_PARTITIONING                = "(partitioning)";
     public static final String SUCCESS                          = "Success! The new file is in";
     public static final String EMPTY_FILE                       = "The file is empty.";
     public static final String DIFFERENCE_FOUND                 = "Files are different";
