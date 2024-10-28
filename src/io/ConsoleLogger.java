@@ -21,11 +21,17 @@ public class ConsoleLogger {
         }
     }
 
-    public static void log(String message) {
+    public static void logGreen(String message) {
         if (PRINT_LOGS) {
             System.out.print(Colours.GREEN);
             System.out.print(message);
             System.out.println(Colours.RESET);
+        }
+    }
+
+    public static void logWhite(String message) {
+        if (PRINT_LOGS) {
+            System.out.print(message);
         }
     }
     
