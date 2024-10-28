@@ -41,7 +41,31 @@ public enum ModifierType {
     REPLACE_EXTENSION {
         @Override
         public String modify(String text) {
-            return text.replaceFirst(RegEx.FILE_EXTENSION, ConfigConstants.RESULT_EXTENSION);
+            text = text.replaceFirst(RegEx.FILE_EXTENSION, "");
+            return String.format("%s%s", text, ConfigConstants.RESULT_EXTENSION);
+        }
+    },
+    REMOVE_TIME {
+        @Override
+        public String modify(String text) {
+            return text.replaceAll(RegEx.TIME_ISO8601, "");
+        }
+    },
+    REMOVE_ALL_DATE_TIME {
+        @Override
+        public String modify(String text) {
+            text = text.replaceAll(RegEx.DATE_TIME_ISO8601, "");
+            text = text.replaceAll(RegEx.DATE_ISO8601, "");
+            text = text.replaceAll(RegEx.TIME_ISO8601, "");
+            return text;
+        }
+    },
+    REPLACE_SEMICOLON_CSV_DELIMITER {
+        @Override
+        public String modify(String text) {
+            text = text.replace(",","."); // For decimal numbers
+            text = text.replace(";",",");
+            return text;
         }
     };
 
