@@ -99,7 +99,7 @@ public class FileIO {
         int newfileSize;
         int fileCounter = 0;
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(ConfigConstants.INPUT_FOLDER + fileName))) {
             line = bufferedReader.readLine();
             while (line != null) {
                 newFileName = String.format("%s%s-%03d%s", 

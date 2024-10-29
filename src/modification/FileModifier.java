@@ -120,8 +120,7 @@ public abstract class FileModifier {
     }
 
     public static void partitionFile(String fileName, long partitionSize, PartitionUnit unit) {
-        String filePath = String.format("%s%s", ConfigConstants.INPUT_FOLDER, fileName);
-        Modifier.partitionFile(filePath, ConfigConstants.OUTPUT_FOLDER, partitionSize, unit);
+        Modifier.partitionFile(fileName, ConfigConstants.OUTPUT_FOLDER, partitionSize, unit);
     }
 
      private FileModifier() {
