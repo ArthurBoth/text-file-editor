@@ -92,7 +92,7 @@ public class FileIO {
         }
     }
 
-    public static void partitionFile(String fileName, String outputPath, long sizeOfChunk, PartitionUnit unit) {
+    public static void partitionFile(String fileName, String outputPath, long sizeOfChunk, PartitionUnit unit, String formatter) {
         String fileNameWithoutExtension = fileName.replaceFirst(RegEx.FILE_EXTENSION, "");
         String line;
         String newFileName;
@@ -102,7 +102,7 @@ public class FileIO {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(ConfigConstants.INPUT_FOLDER + fileName))) {
             line = bufferedReader.readLine();
             while (line != null) {
-                newFileName = String.format("%s%s-%03d%s", 
+                newFileName = String.format(formatter, 
                                             ConfigConstants.OUTPUT_FOLDER,
                                             fileNameWithoutExtension, 
                                             ++fileCounter, 

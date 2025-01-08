@@ -56,7 +56,7 @@ public class ModifierMemoryless extends Modifier {
 
             if (!(line1.equals(line2))) {
                 foundDifference = true;
-                ConsoleLogger.logWhite(String.format("%s %d%n", StringConstants.DIFFERENCE_FOUND_LINE, index));
+                ConsoleLogger.logWhite(String.format("%s %d", StringConstants.DIFFERENCE_FOUND_LINE, index));
                 FileIO.writeLine(outputPath, StringConstants.FILE_DIFFERENCE(++differenceNumber, index));
                 FileIO.writeLine(outputPath, String.format("%s%n",line1));
                 FileIO.writeLine(outputPath, String.format("%s%n",line2));

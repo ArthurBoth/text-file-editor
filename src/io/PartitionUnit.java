@@ -4,19 +4,19 @@ public enum PartitionUnit {
     KB {
         @Override
         public long getBytes(long size) {
-            return size * 1024;
+            return size << 10;
         }
     }, 
     MB {
         @Override
         public long getBytes(long size) {
-            return size * 1024 * 1024;
+            return size << 20;
         }
     }, 
     GB {
         @Override
         public long getBytes(long size) {
-            return size * 1024 * 1024 * 1024;
+            return size << 30;
         }
     };
 

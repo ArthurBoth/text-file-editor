@@ -120,11 +120,12 @@ public abstract class FileModifier {
     }
 
     public static void partitionFile(String fileName, long partitionSize, PartitionUnit unit) {
-        Modifier.partitionFile(fileName, ConfigConstants.OUTPUT_FOLDER, partitionSize, unit);
+        File file        = new File(ConfigConstants.INPUT_FOLDER + fileName);
+        String formatter = StringConstants.PARTITION_FORMATTER(file.length(), unit.getBytes(partitionSize));
+        Modifier.partitionFile(fileName, ConfigConstants.OUTPUT_FOLDER, partitionSize, unit, formatter);
     }
 
      private FileModifier() {
         throw new IllegalStateException(StringConstants.UTILITY_CLASS);
     }
-
 }
