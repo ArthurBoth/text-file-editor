@@ -8,7 +8,7 @@ public abstract class Modifier {
     
     public abstract void compareFiles(String file1, String file2, boolean ignoreDateTime);
 
-    public static void partitionFile(String fileName, String outputPath, long sizeOfChunkMB, PartitionUnit unit, String formatter) {
+    public static void partitionFile(String fileName, String outputPath, int sizeOfChunkMB, PartitionUnit unit, String formatter) {
         FileIO.partitionFile(fileName, outputPath, sizeOfChunkMB, unit, formatter);
     }
 }

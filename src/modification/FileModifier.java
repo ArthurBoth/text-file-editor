@@ -7,7 +7,7 @@ import constants.ConfigConstants;
 import java.io.File;
 
 public abstract class FileModifier {
-    private static Modifier memory = new ModifierMemory();
+    private static Modifier memory     = new ModifierMemory();
     private static Modifier memoryless = new ModifierMemoryless();
 
     public static void modifyContentOfFile(String fileName, ModifierType type, boolean memorylessOperation) {
@@ -26,7 +26,7 @@ public abstract class FileModifier {
     }
 
     public static void modifyContentOfAllFiles(ModifierType  type) {
-        File folder = new File(ConfigConstants.INPUT_FOLDER);
+        File folder  = new File(ConfigConstants.INPUT_FOLDER);
         File[] files = folder.listFiles();
 
         for (File file : files) {
@@ -36,7 +36,7 @@ public abstract class FileModifier {
         }
     }
     public static void modifyContentOfAllFiles(ModifierType  type, boolean memorylessOperations) {
-        File folder = new File(ConfigConstants.INPUT_FOLDER);
+        File folder  = new File(ConfigConstants.INPUT_FOLDER);
         File[] files = folder.listFiles();
 
         for (File file : files) {
@@ -68,7 +68,7 @@ public abstract class FileModifier {
     }
 
     public static void renameAllFiles(ModifierType type) {
-        File folder = new File(ConfigConstants.INPUT_FOLDER);
+        File folder  = new File(ConfigConstants.INPUT_FOLDER);
         File[] files = folder.listFiles();
 
         for (File file : files) {
@@ -99,7 +99,7 @@ public abstract class FileModifier {
     }
 
     private static void verifyFolders() {
-        File inputFolder = new File(ConfigConstants.INPUT_FOLDER);
+        File inputFolder  = new File(ConfigConstants.INPUT_FOLDER);
         File outputFolder = new File(ConfigConstants.OUTPUT_FOLDER);
 
         if (!inputFolder.exists()) {
@@ -115,11 +115,11 @@ public abstract class FileModifier {
         partitionFile(fileName, ConfigConstants.DEFAULT_PARTITION_SIZE, ConfigConstants.DEFAULT_PARTITION_UNIT);
     }
 
-    public static void partitionFile(String fileName, long partitionSize) {
+    public static void partitionFile(String fileName, int partitionSize) {
         partitionFile(fileName, partitionSize, ConfigConstants.DEFAULT_PARTITION_UNIT);
     }
 
-    public static void partitionFile(String fileName, long partitionSize, PartitionUnit unit) {
+    public static void partitionFile(String fileName, int partitionSize, PartitionUnit unit) {
         File file        = new File(ConfigConstants.INPUT_FOLDER + fileName);
         String formatter = StringConstants.PARTITION_FORMATTER(file.length(), unit.getBytes(partitionSize));
         Modifier.partitionFile(fileName, ConfigConstants.OUTPUT_FOLDER, partitionSize, unit, formatter);

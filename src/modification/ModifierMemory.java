@@ -10,7 +10,7 @@ public class ModifierMemory extends Modifier{
 
     @Override
     public void modifyContentOfFile(String fileName, ModifierType type) {
-        String path = ConfigConstants.INPUT_FOLDER + fileName;
+        String path    = ConfigConstants.INPUT_FOLDER  + fileName;
         String newPath = ConfigConstants.OUTPUT_FOLDER + ModifierType.REPLACE_EXTENSION.modify(fileName);
         String text;
 

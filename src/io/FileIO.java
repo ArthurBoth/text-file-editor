@@ -18,7 +18,7 @@ public class FileIO {
         StringBuilder content = new StringBuilder();
 
         try {
-            FileReader fileReader = new FileReader(path);
+            FileReader fileReader         = new FileReader(path);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
 
@@ -43,7 +43,7 @@ public class FileIO {
 
     public static void write(String path, String content) {
         try {
-            FileWriter fileWriter = new FileWriter(path);
+            FileWriter fileWriter         = new FileWriter(path);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
             bufferedWriter.write(content);
@@ -60,7 +60,7 @@ public class FileIO {
         String line;
 
         try {
-            FileReader fileReader = new FileReader(path);
+            FileReader fileReader         = new FileReader(path);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             // Skip lines
@@ -92,7 +92,7 @@ public class FileIO {
         }
     }
 
-    public static void partitionFile(String fileName, String outputPath, long sizeOfChunk, PartitionUnit unit, String formatter) {
+    public static void partitionFile(String fileName, String outputPath, int sizeOfChunk, PartitionUnit unit, String formatter) {
         String fileNameWithoutExtension = fileName.replaceFirst(RegEx.FILE_EXTENSION, "");
         String line;
         String newFileName;
