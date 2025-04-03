@@ -7,6 +7,7 @@ public class StringConstants {
     public static final String WHEN_WRITING                  = "(writing)";
     public static final String WHEN_PARTITIONING             = "(partitioning)";
     public static final String WHEN_APPENDING                = "(appending)";
+    public static final String WHEN_REWRITING                = "(rewriting)";
     public static final String EMPTY_FILE                    = "The file is empty.";
     public static final String DIFFERENCE_FOUND              = "Files are different";
     public static final String DIFFERENCE_FOUND_LINE         = "Found a difference in line";

@@ -5,6 +5,8 @@ import constants.ConfigConstants;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 public enum ModifierType {
     TRANSCRIPTION {
@@ -15,6 +17,11 @@ public enum ModifierType {
             text = reduceGaps(text);
             text = removeBeginningGap(text);
             return text;
+        }
+
+        @Override
+        public String modify(String text, ModifierOptions options) {
+            return modify(text);
         }
     },
     CENSOR {
@@ -37,6 +44,11 @@ public enum ModifierType {
 
             return text;
         }
+
+        @Override
+        public String modify(String text, ModifierOptions options) {
+            return modify(text);
+        }
     },
     REPLACE_EXTENSION {
         @Override
@@ -44,11 +56,21 @@ public enum ModifierType {
             text = text.replaceFirst(RegEx.FILE_EXTENSION, "");
             return String.format("%s%s", text, ConfigConstants.RESULT_EXTENSION);
         }
+
+        @Override
+        public String modify(String text, ModifierOptions options) {
+            return modify(text);
+        }
     },
     REMOVE_TIME {
         @Override
         public String modify(String text) {
             return text.replaceAll(RegEx.TIME_ISO8601, "");
+        }
+
+        @Override
+        public String modify(String text, ModifierOptions options) {
+            return modify(text);
         }
     },
     REMOVE_ALL_DATE_TIME {
@@ -59,6 +81,11 @@ public enum ModifierType {
             text = text.replaceAll(RegEx.TIME_ISO8601, "");
             return text;
         }
+
+        @Override
+        public String modify(String text, ModifierOptions options) {
+            return modify(text);
+        }
     },
     REPLACE_SEMICOLON_CSV_DELIMITER {
         @Override
@@ -67,9 +94,48 @@ public enum ModifierType {
             text = text.replace(ConfigConstants.CSV_CURRENT_SEPARATOR, ConfigConstants.CSV_NEW_SEPARATOR);
             return text;
         }
+
+        @Override
+        public String modify(String text, ModifierOptions options) {
+            return modify(text);
+        }
+    },
+    REMOVE_CSV_COLUMNS {
+        @Override
+        public String modify(String text) {
+            return text;
+        }
+
+        @Override
+        public String modify(String text, ModifierOptions options) {
+            int[] columns = options.getNumbers();
+            return csvReplaceColumns(text, columns);
+        }
+
+        private static String csvReplaceColumns(String text, int[] columns) {
+            String[] split;
+            HashSet<Integer> columnSet;
+            LinkedList<String> splittedReturn;
+
+            split = text.split(ConfigConstants.CSV_CURRENT_SEPARATOR);
+            if (split.length <= columns.length) return "";
+        
+            columnSet = new HashSet<>();
+            for (int i : columns) columnSet.add(i);
+        
+            splittedReturn = new LinkedList<>();
+            for (int i = 0; i < split.length; i++) {
+                if(columnSet.contains(i)) continue;
+                
+                splittedReturn.add(split[i]);
+            }
+
+            return String.join(ConfigConstants.CSV_CURRENT_SEPARATOR, splittedReturn);
+        }
     };
 
     public abstract String modify(String text);
+    public abstract String modify(String text, ModifierOptions options);
 
     private static String removeLine(String text, String regex) {
         String[] lines = text.split(RegEx.NEW_LINE);

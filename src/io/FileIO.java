@@ -3,6 +3,8 @@ package io;
 import constants.ConfigConstants;
 import constants.RegEx;
 import constants.StringConstants;
+import modification.ModifierOptions;
+import modification.ModifierType;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -149,6 +151,32 @@ public class FileIO {
         }
         ConsoleLogger.logGreen(StringConstants.FINISHED_APPENDING(inputPath));
     }
+
+    public static boolean readRemoveWrite(String inputPath, String outputPath, ModifierType type, ModifierOptions options) {
+        String line;
+        FileWriter fileWriter;
+        BufferedReader bufferedReader;
+
+        try {
+            bufferedReader = new BufferedReader(new FileReader(inputPath));
+            fileWriter     = new FileWriter(outputPath, true);
+            line           = bufferedReader.readLine();
+            
+            while (line != null) {
+                fileWriter.write(String.format("%s%n", type.modify(line, options)));
+                
+                line = bufferedReader.readLine();
+            }
+
+            bufferedReader.close();
+            fileWriter.close();
+        } catch (IOException e) {
+            ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_REWRITING, e);
+            return false;
+        }
+        return true;
+    }
+
     private FileIO() {
         throw new IllegalStateException(StringConstants.UTILITY_CLASS);
     }

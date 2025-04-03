@@ -126,6 +126,22 @@ public abstract class FileModifier {
         Modifier.partitionFile(fileName, ConfigConstants.OUTPUT_FOLDER, partitionSize, unit, formatter);
     }
 
+    public static void removeColumnsOfFile(String fileName, int... columns) {
+        if (fileName.equals(ConfigConstants.GIT_KEEP)) return;  // Skips the '.gitkeep' file
+        verifyFolders();
+        ((ModifierMemoryless) memoryless).removeColumns(fileName, columns);
+    }
+
+    public static void removeColumnsOfAllFiles(int... columns) {
+        File folder  = new File(ConfigConstants.INPUT_FOLDER);
+        File[] files = folder.listFiles();
+
+        for (File file : files) {
+            if (file.isFile()) {
+                removeColumnsOfFile(file.getName(), columns);
+            }
+        }
+    }
 
     public static void appendFiles(String outputName, String... fileNames) {
         String outputPath = ConfigConstants.OUTPUT_FOLDER + outputName;

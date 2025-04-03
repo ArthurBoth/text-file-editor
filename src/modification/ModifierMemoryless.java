@@ -73,4 +73,13 @@ public class ModifierMemoryless extends Modifier {
             ConsoleLogger.logGreen(StringConstants.NO_DIFFERENCE_FOUND);
         }
     }
+
+    public void removeColumns(String fileName, int[] columns) {
+        String          inputPath  = ConfigConstants.INPUT_FOLDER  + fileName;
+        String          outputPath = ConfigConstants.OUTPUT_FOLDER + ModifierType.REPLACE_EXTENSION.modify(fileName);
+        ModifierOptions options    = ModifierOptions.options().numeric(columns).build();
+
+        if (FileIO.readRemoveWrite(inputPath, outputPath, ModifierType.REMOVE_CSV_COLUMNS, options))
+            ConsoleLogger.logGreen(StringConstants.SUCCESS(outputPath));
+    }
 }

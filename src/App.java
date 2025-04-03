@@ -21,6 +21,8 @@ public class App{
         // FileModifier.renameAllFiles(REPLACE_EXTENSION);
         // FileModifier.compareFiles("example.txt", "example.md");
         // FileModifier.partitionFile("example.txt", 10, KB);
+        // FileModifier.removeColumnsOfFile("example.csv", 10, 15);
+        // FileModifier.removeColumnsOfAllFiles(10, 15);
         // FileModifier.appendFiles("output.txt", "example1.txt", "example2.txt");
         // FileModifier.appendFilesAllFiles("output.txt");
         }
