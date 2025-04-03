@@ -7,7 +7,6 @@ public class StringConstants {
     public static final String WHEN_WRITING                  = "(writing)";
     public static final String WHEN_PARTITIONING             = "(partitioning)";
     public static final String WHEN_APPENDING                = "(appending)";
-    public static final String SUCCESS                       = "Success! The new file is in";
     public static final String EMPTY_FILE                    = "The file is empty.";
     public static final String DIFFERENCE_FOUND              = "Files are different";
     public static final String DIFFERENCE_FOUND_LINE         = "Found a difference in line";
@@ -27,6 +26,14 @@ public class StringConstants {
         return String.format("%%s%%s-%%0%dd%%s", digits);  // 5 -> %s%s-%05d%s
     }
     
+    public static String SUCCESS(String outputPath) {
+        return String.format("Success! The new file is in {%s}", outputPath);
+    }
+
+    public static String FINISHED_APPENDING(String fileName) {
+        return String.format("Finished appending {%s}", fileName);
+    }
+
     private StringConstants() {
         throw new IllegalStateException(UTILITY_CLASS);
     }

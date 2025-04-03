@@ -30,7 +30,7 @@ public class ModifierMemoryless extends Modifier {
             line = String.format("%s%n", type.modify(line));
             FileIO.writeLine(outputPath, line);
         }
-        ConsoleLogger.logGreen(String.format("%s {%s}", StringConstants.SUCCESS, outputPath));
+        ConsoleLogger.logGreen(StringConstants.SUCCESS(outputPath));
     }
 
     public void compareFiles(String file1, String file2, boolean ignoreDateTime) {

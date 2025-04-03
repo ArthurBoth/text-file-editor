@@ -49,7 +49,7 @@ public class FileIO {
             bufferedWriter.write(content);
             bufferedWriter.close();
 
-            ConsoleLogger.logGreen(String.format("%s {%s}", StringConstants.SUCCESS, path));
+            ConsoleLogger.logGreen(StringConstants.SUCCESS(path));
 
         } catch (IOException e) {
             ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_WRITING, e);
@@ -147,6 +147,7 @@ public class FileIO {
         } catch (IOException e) {
             ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_APPENDING, e);
         }
+        ConsoleLogger.logGreen(StringConstants.FINISHED_APPENDING(inputPath));
     }
     private FileIO() {
         throw new IllegalStateException(StringConstants.UTILITY_CLASS);
