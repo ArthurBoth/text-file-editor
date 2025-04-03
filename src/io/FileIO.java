@@ -18,7 +18,7 @@ public class FileIO {
         StringBuilder content = new StringBuilder();
 
         try {
-            FileReader fileReader         = new FileReader(path);
+            FileReader     fileReader     = new FileReader(path);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
 
@@ -43,13 +43,13 @@ public class FileIO {
 
     public static void write(String path, String content) {
         try {
-            FileWriter fileWriter         = new FileWriter(path);
+            FileWriter     fileWriter     = new FileWriter(path);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
             bufferedWriter.write(content);
             bufferedWriter.close();
 
-            ConsoleLogger.logGreen(String.format("%s {%s}", StringConstants.SUCCESS, path));
+            ConsoleLogger.logGreen(StringConstants.SUCCESS(path));
 
         } catch (IOException e) {
             ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_WRITING, e);
@@ -60,10 +60,10 @@ public class FileIO {
         String line;
 
         try {
-            FileReader fileReader         = new FileReader(path);
+            FileReader     fileReader     = new FileReader(path);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-            // Skip lines
+                  // Skip lines
             for (int i = 0; i < skip; i++) {
                 bufferedReader.readLine();
             }
@@ -117,7 +117,7 @@ public class FileIO {
                         }
                         outputStream.write(bytes);
                         newfileSize += bytes.length;
-                        line = bufferedReader.readLine();
+                        line         = bufferedReader.readLine();
                     }
                 }
             }
@@ -126,6 +126,29 @@ public class FileIO {
         }
     }
 
+    public static void readAppend(String inputPath, String outputPath) {
+        String line;
+        FileWriter fileWriter;
+        BufferedReader bufferedReader;
+
+        try {
+            bufferedReader = new BufferedReader(new FileReader(inputPath));
+            fileWriter     = new FileWriter(outputPath, true);
+            line           = bufferedReader.readLine();
+            
+            while (line != null) {
+                fileWriter.write(String.format("%s%n", line));
+                
+                line = bufferedReader.readLine();
+            }
+
+            bufferedReader.close();
+            fileWriter.close();
+        } catch (IOException e) {
+            ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_APPENDING, e);
+        }
+        ConsoleLogger.logGreen(StringConstants.FINISHED_APPENDING(inputPath));
+    }
     private FileIO() {
         throw new IllegalStateException(StringConstants.UTILITY_CLASS);
     }

@@ -29,7 +29,7 @@ public class ModifierMemory extends Modifier{
         String text2 = FileIO.read(ConfigConstants.INPUT_FOLDER + file2);
 
         if (!(text1.equals(text2))) {
-            ConsoleLogger.logWhite(StringConstants.DIFFERENCE_FOUND);
+            ConsoleLogger.log(StringConstants.DIFFERENCE_FOUND);
         } else {
             ConsoleLogger.logGreen(StringConstants.NO_DIFFERENCE_FOUND);
         }

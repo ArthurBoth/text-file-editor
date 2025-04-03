@@ -5,13 +5,14 @@ import io.PartitionUnit;
 import constants.ConfigConstants;
 
 import java.io.File;
+import java.util.Arrays;
 
 public abstract class FileModifier {
     private static Modifier memory     = new ModifierMemory();
     private static Modifier memoryless = new ModifierMemoryless();
 
     public static void modifyContentOfFile(String fileName, ModifierType type, boolean memorylessOperation) {
-        if (fileName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
+        if (fileName.equals(ConfigConstants.GIT_KEEP)) return;  // Skips the '.gitkeep' file
         verifyFolders();
         
         if (memorylessOperation) {
@@ -47,8 +48,8 @@ public abstract class FileModifier {
     }
 
     public static void renameFile(String oldName, String newName) {
-        if (oldName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
-        if (newName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
+        if (oldName.equals(ConfigConstants.GIT_KEEP)) return;  // Skips the '.gitkeep' file
+        if (newName.equals(ConfigConstants.GIT_KEEP)) return;  // Skips the '.gitkeep' file
         verifyFolders();
 
         File oldFile = new File(ConfigConstants.INPUT_FOLDER + oldName);
@@ -58,7 +59,7 @@ public abstract class FileModifier {
     }
 
     public static void renameFile(String fileName, ModifierType type) {
-        if (fileName.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
+        if (fileName.equals(ConfigConstants.GIT_KEEP)) return;  // Skips the '.gitkeep' file
         verifyFolders();
 
         File oldFile = new File(ConfigConstants.INPUT_FOLDER + fileName);
@@ -79,8 +80,8 @@ public abstract class FileModifier {
     }
 
     public static void compareFiles(String file1, String file2, boolean memorylessOperation, boolean ignoreDateTime) {
-        if (file1.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
-        if (file2.equals(ConfigConstants.GIT_KEEP)) return; // Skips the '.gitkeep' file
+        if (file1.equals(ConfigConstants.GIT_KEEP)) return;  // Skips the '.gitkeep' file
+        if (file2.equals(ConfigConstants.GIT_KEEP)) return;  // Skips the '.gitkeep' file
         verifyFolders();
 
         if (memorylessOperation) {
@@ -120,9 +121,39 @@ public abstract class FileModifier {
     }
 
     public static void partitionFile(String fileName, int partitionSize, PartitionUnit unit) {
-        File file        = new File(ConfigConstants.INPUT_FOLDER + fileName);
+        File   file      = new File(ConfigConstants.INPUT_FOLDER + fileName);
         String formatter = StringConstants.PARTITION_FORMATTER(file.length(), unit.getBytes(partitionSize));
         Modifier.partitionFile(fileName, ConfigConstants.OUTPUT_FOLDER, partitionSize, unit, formatter);
+    }
+
+
+    public static void appendFiles(String outputName, String... fileNames) {
+        String outputPath = ConfigConstants.OUTPUT_FOLDER + outputName;
+        
+
+        for (int i = 0; i < fileNames.length; i++) {
+            fileNames[i] = ConfigConstants.INPUT_FOLDER + fileNames[i];
+        }
+
+        Modifier.appendFiles(fileNames, outputPath);
+    }
+
+    public static void appendFilesAllFiles(String outputName) {
+        verifyFolders();
+
+        File   folder      = new File(ConfigConstants.INPUT_FOLDER);
+        File   [] files    = folder.listFiles();
+        String[] fileNames = new String[files.length - 1];
+        
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].getName().equals(ConfigConstants.GIT_KEEP)) continue;
+            
+            fileNames[i - 1] = files[i].getName();
+        }
+
+        Arrays.sort(fileNames);
+
+        appendFiles(outputName, fileNames);
     }
 
      private FileModifier() {

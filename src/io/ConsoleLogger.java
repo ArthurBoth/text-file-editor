@@ -4,7 +4,6 @@ import static constants.ConfigConstants.PRINT_LOGS;
 
 public class ConsoleLogger {
 
-    @SuppressWarnings("unused")
     private class Colours {
         private static final String RESET  = "\u001B[0m";
         private static final String BLACK  = "\u001B[30m";
@@ -19,9 +18,25 @@ public class ConsoleLogger {
         private Colours() {
             throw new IllegalStateException("Utility class");
         }
+    } 
+
+    public static synchronized void logBlack(String message) {
+        if (PRINT_LOGS) {
+            System.out.print(Colours.BLACK);
+            System.out.print(message);
+            System.out.println(Colours.RESET);
+        }
     }
 
-    public static void logGreen(String message) {
+    public static synchronized void logRed(String message) {
+        if (PRINT_LOGS) {
+            System.out.print(Colours.RED);
+            System.out.print(message);
+            System.out.println(Colours.RESET);
+        }
+    }
+
+    public static synchronized void logGreen(String message) {
         if (PRINT_LOGS) {
             System.out.print(Colours.GREEN);
             System.out.print(message);
@@ -29,7 +44,23 @@ public class ConsoleLogger {
         }
     }
     
-    public static void logPurple(String message) {
+    public static synchronized void logYellow(String message) {
+        if (PRINT_LOGS) {
+            System.out.print(Colours.YELLOW);
+            System.out.print(message);
+            System.out.println(Colours.RESET);
+        }
+    }
+
+    public static synchronized void logBlue(String message) {
+        if (PRINT_LOGS) {
+            System.out.print(Colours.BLUE);
+            System.out.print(message);
+            System.out.println(Colours.RESET);
+        }
+    }
+    
+    public static synchronized void logPurple(String message) {
         if (PRINT_LOGS) {
             System.out.print(Colours.PURPLE);
             System.out.print(message);
@@ -37,7 +68,7 @@ public class ConsoleLogger {
         }
     }
     
-    public static void logCyan(String message) {
+    public static synchronized void logCyan(String message) {
         if (PRINT_LOGS) {
             System.out.print(Colours.CYAN);
             System.out.print(message);
@@ -45,14 +76,22 @@ public class ConsoleLogger {
         }
     }
 
-    public static void logWhite(String message) {
+    public static synchronized void logWhite(String message) {
+        if (PRINT_LOGS) {
+            System.out.print(Colours.WHITE);
+            System.out.println(message);
+            System.out.print(Colours.RESET);
+        }
+    }
+
+    public static synchronized void log(String message) {
         if (PRINT_LOGS) {
             System.out.print(Colours.RESET);
             System.out.println(message);
         }
     }
     
-    public static void logError(String message, Exception e) {
+    public static synchronized void logError(String message, Exception e) {
         if (PRINT_LOGS) {
             System.out.println(Colours.RED);
             System.err.printf("ERROR: %s%n", message);
@@ -63,7 +102,7 @@ public class ConsoleLogger {
         }
     }
 
-    public static void logError(String message) {
+    public static synchronized void logError(String message) {
         if (PRINT_LOGS) {
             System.out.print(Colours.RED);
             System.err.printf("ERROR: %s", message);

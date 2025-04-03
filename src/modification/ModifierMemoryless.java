@@ -17,11 +17,11 @@ public class ModifierMemoryless extends Modifier {
     }
 
     private void readWrite(String inputPath, String outputPath, ModifierType type) {
-        int index   = 0;
-        String line = FileIO.readLine(inputPath, index++);
+        int    index = 0;
+        String line  = FileIO.readLine(inputPath, index++);
 
         if (line == null) {
-            ConsoleLogger.logWhite(StringConstants.EMPTY_FILE);
+            ConsoleLogger.log(StringConstants.EMPTY_FILE);
             return;
         }
         
@@ -30,7 +30,7 @@ public class ModifierMemoryless extends Modifier {
             line = String.format("%s%n", type.modify(line));
             FileIO.writeLine(outputPath, line);
         }
-        ConsoleLogger.logGreen(String.format("%s {%s}", StringConstants.SUCCESS, outputPath));
+        ConsoleLogger.logGreen(StringConstants.SUCCESS(outputPath));
     }
 
     public void compareFiles(String file1, String file2, boolean ignoreDateTime) {
@@ -42,11 +42,11 @@ public class ModifierMemoryless extends Modifier {
     }
     
     private void compareFiles(String inputPath1, String inputPath2, String outputPath, boolean ignoreDateTime) {
-        boolean foundDifference = false;
-        int differenceNumber    = 0;
-        int index               = 0;
-        String line1 = FileIO.readLine(inputPath1, index);
-        String line2 = FileIO.readLine(inputPath2, index);
+        boolean foundDifference  = false;
+        int     differenceNumber = 0;
+        int     index            = 0;
+        String  line1            = FileIO.readLine(inputPath1, index);
+        String  line2            = FileIO.readLine(inputPath2, index);
 
         while ((line1 != null) && (line2 != null)) {
             if (ignoreDateTime) {
@@ -56,7 +56,7 @@ public class ModifierMemoryless extends Modifier {
 
             if (!(line1.equals(line2))) {
                 foundDifference = true;
-                ConsoleLogger.logWhite(String.format("%s %d", StringConstants.DIFFERENCE_FOUND_LINE, index));
+                ConsoleLogger.log(String.format("%s %d", StringConstants.DIFFERENCE_FOUND_LINE, index));
                 FileIO.writeLine(outputPath, StringConstants.FILE_DIFFERENCE(++differenceNumber, index));
                 FileIO.writeLine(outputPath, String.format("%s%n",line1));
                 FileIO.writeLine(outputPath, String.format("%s%n",line2));
@@ -68,7 +68,7 @@ public class ModifierMemoryless extends Modifier {
         }
 
         if (foundDifference) {
-            ConsoleLogger.logWhite(String.format("%s {%s}", StringConstants.DIFFERENCE_FOUND__OUTPUT_FILE, outputPath));
+            ConsoleLogger.log(String.format("%s {%s}", StringConstants.DIFFERENCE_FOUND__OUTPUT_FILE, outputPath));
         } else {
             ConsoleLogger.logGreen(StringConstants.NO_DIFFERENCE_FOUND);
         }

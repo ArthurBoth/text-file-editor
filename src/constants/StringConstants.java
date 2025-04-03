@@ -1,19 +1,19 @@
 package constants;
 
 public class StringConstants {
-    // For logging
+      // For logging
     public static final String ERROR_MSG                     = "An error occurred. ";
     public static final String WHEN_READING                  = "(reading)";
     public static final String WHEN_WRITING                  = "(writing)";
     public static final String WHEN_PARTITIONING             = "(partitioning)";
-    public static final String SUCCESS                       = "Success! The new file is in";
+    public static final String WHEN_APPENDING                = "(appending)";
     public static final String EMPTY_FILE                    = "The file is empty.";
     public static final String DIFFERENCE_FOUND              = "Files are different";
     public static final String DIFFERENCE_FOUND_LINE         = "Found a difference in line";
     public static final String DIFFERENCE_FOUND__OUTPUT_FILE = "A file detailing the differences was created in";
     public static final String NO_DIFFERENCE_FOUND           = "No difference was found between both files";
 
-    // Auxiliaries
+      // Auxiliaries
     public static final String UTILITY_CLASS = "Utility class";
 
     public static String FILE_DIFFERENCE(int index, int line) {
@@ -22,10 +22,18 @@ public class StringConstants {
 
     public static String PARTITION_FORMATTER(long fileSize, long partitionSize) {
         long numberOfChunks = (fileSize / partitionSize) + 1;
-        int digits          = String.valueOf(numberOfChunks).toCharArray().length;
-        return String.format("%%s%%s-%%0%dd%%s", digits); // 5 -> %s%s-%05d%s
+        int  digits         = String.valueOf(numberOfChunks).toCharArray().length;
+        return String.format("%%s%%s-%%0%dd%%s", digits);  // 5 -> %s%s-%05d%s
     }
     
+    public static String SUCCESS(String outputPath) {
+        return String.format("Success! The new file is in {%s}", outputPath);
+    }
+
+    public static String FINISHED_APPENDING(String fileName) {
+        return String.format("Finished appending {%s}", fileName);
+    }
+
     private StringConstants() {
         throw new IllegalStateException(UTILITY_CLASS);
     }
