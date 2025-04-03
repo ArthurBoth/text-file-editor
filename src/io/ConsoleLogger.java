@@ -28,10 +28,27 @@ public class ConsoleLogger {
             System.out.println(Colours.RESET);
         }
     }
+    
+    public static void logPurple(String message) {
+        if (PRINT_LOGS) {
+            System.out.print(Colours.PURPLE);
+            System.out.print(message);
+            System.out.println(Colours.RESET);
+        }
+    }
+    
+    public static void logCyan(String message) {
+        if (PRINT_LOGS) {
+            System.out.print(Colours.CYAN);
+            System.out.print(message);
+            System.out.println(Colours.RESET);
+        }
+    }
 
     public static void logWhite(String message) {
         if (PRINT_LOGS) {
-            System.out.print(message);
+            System.out.print(Colours.RESET);
+            System.out.println(message);
         }
     }
     

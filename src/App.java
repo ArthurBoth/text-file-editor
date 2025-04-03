@@ -7,6 +7,10 @@ import static modification.ModifierType.REMOVE_TIME;
 import static modification.ModifierType.REMOVE_ALL_DATE_TIME;
 import static modification.ModifierType.REPLACE_SEMICOLON_CSV_DELIMITER;
 
+import static io.PartitionUnit.KB;
+import static io.PartitionUnit.MB;
+import static io.PartitionUnit.GB;
+
 @SuppressWarnings("unused")
 public class App{
     public static void main(String[] args) {
@@ -16,5 +20,6 @@ public class App{
         // FileModifier.renameFile("example.txt", "example.md");
         // FileModifier.renameAllFiles(REPLACE_EXTENSION);
         // FileModifier.compareFiles("example.txt", "example.md");
+        // FileModifier.partitionFile("example.txt", 10, KB);
         }
 }

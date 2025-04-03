@@ -26,7 +26,7 @@ public enum ModifierType {
             Matcher matcher;
             
             for (String word : RegEx.BAD_WORDS) {
-                regex = RegEx.REGEX_BOUNDARY + Pattern.quote(word) + RegEx.REGEX_BOUNDARY;
+                regex   = RegEx.REGEX_BOUNDARY + Pattern.quote(word) + RegEx.REGEX_BOUNDARY;
                 pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE); // ignores case
                 matcher = pattern.matcher(text);
 
