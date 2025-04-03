@@ -63,8 +63,8 @@ public enum ModifierType {
     REPLACE_SEMICOLON_CSV_DELIMITER {
         @Override
         public String modify(String text) {
-            text = text.replace(",","."); // For decimal numbers
-            text = text.replace(";",",");
+            text = text.replace(ConfigConstants.CSV_NEW_SEPARATOR, ConfigConstants.CSV_PIVOT_SEPARATOR);
+            text = text.replace(ConfigConstants.CSV_CURRENT_SEPARATOR, ConfigConstants.CSV_NEW_SEPARATOR);
             return text;
         }
     };

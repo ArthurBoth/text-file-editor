@@ -11,4 +11,10 @@ public abstract class Modifier {
     public static void partitionFile(String fileName, String outputPath, int sizeOfChunkMB, PartitionUnit unit, String formatter) {
         FileIO.partitionFile(fileName, outputPath, sizeOfChunkMB, unit, formatter);
     }
+
+    public static void appendFiles(String[] filePaths, String outputPath) {
+        for (String path : filePaths) {
+            FileIO.readAppend(path, outputPath);
+        }
+    }
 }
