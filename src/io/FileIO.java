@@ -3,8 +3,8 @@ package io;
 import constants.ConfigConstants;
 import constants.RegEx;
 import constants.StringConstants;
-import modification.ModifierOptions;
-import modification.ModifierType;
+import io.fileSizes.FileSize;
+import modification.textModification.Modification;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -16,168 +16,171 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class FileIO {
-    public static String read(String path) {
-        StringBuilder content = new StringBuilder();
+  public static String read(String path) {
+    StringBuilder content = new StringBuilder();
 
-        try {
-            FileReader     fileReader     = new FileReader(path);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line;
+    try {
+      FileReader     fileReader     = new FileReader(path);
+      BufferedReader bufferedReader = new BufferedReader(fileReader);
+      String line;
 
-            while ((line = bufferedReader.readLine()) != null) {
-                content.append(line);
-                content.append(RegEx.NEW_LINE);
+      while ((line = bufferedReader.readLine()) != null) {
+        content.append(line);
+        content.append(RegEx.NEW_LINE);
+      }
+
+      bufferedReader.close();
+    } catch (IOException e) {
+      ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_READING, e);
+      return null;
+    }
+    if ((content.length() == 0)) {
+      ConsoleLogger.logGreen(StringConstants.EMPTY_FILE);
+      return "";
+    }
+
+    return content.toString();
+  }
+
+  public static void write(String path, String content) {
+    try {
+      FileWriter     fileWriter     = new FileWriter(path);
+      BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+      bufferedWriter.write(content);
+      bufferedWriter.close();
+
+      ConsoleLogger.logGreen(StringConstants.SUCCESS(path));
+    } catch (IOException e) {
+      ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_WRITING, e);
+    }
+  }
+
+  public static String readLine(String path, int skip) {
+    String line;
+
+    try {
+      FileReader     fileReader     = new FileReader(path);
+      BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+        // Skip lines
+      for (int i = 0; i < skip; i++) {
+        bufferedReader.readLine();
+      }
+
+      line = bufferedReader.readLine();
+
+      bufferedReader.close();
+    } catch (IOException e) {
+      ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_READING, e);
+      return null;
+    }
+    return line;
+  }
+
+  public static void writeLine(String path, String line) {
+    try {
+      FileWriter fileWriter = new FileWriter(path, true);
+
+      fileWriter.write(line);
+
+      fileWriter.close();
+    } catch (IOException e) {
+      ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_WRITING, e);
+    }
+  }
+
+  public static void partitionFile(
+    String fileName,
+    String outputPath,
+    FileSize unit,
+    String nameFormat
+  ) {
+    String fileNameWithoutExtension = fileName.replaceFirst(RegEx.FILE_EXTENSION, "");
+    String line;
+    String newFileName;
+    int newfileSize;
+    int fileCounter = 0;
+
+    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(ConfigConstants.INPUT_FOLDER + fileName))) {
+      line = bufferedReader.readLine();
+      while (line != null) {
+        newFileName = String.format(
+          nameFormat,
+          outputPath,
+          fileNameWithoutExtension,
+          ++fileCounter,
+          ConfigConstants.RESULT_EXTENSION
+        );
+
+        try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(newFileName))) {
+          newfileSize = 0;
+          while (line != null) {
+            byte[] bytes = (line + RegEx.NEW_LINE).getBytes(ConfigConstants.DEFAULT_CHARSET);
+            if (newfileSize + bytes.length > (unit.getBytes())) {
+              break;
             }
-
-            bufferedReader.close();
-
-        } catch (IOException e) {
-            ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_READING, e);
-            return null;
+            outputStream.write(bytes);
+            newfileSize += bytes.length;
+            line         = bufferedReader.readLine();
+          }
         }
-        if ((content.length() == 0)) {
-            ConsoleLogger.logGreen(StringConstants.EMPTY_FILE);
-            return "";
+      }
+    } catch (IOException e) {
+      ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_PARTITIONING, e);
+    }
+  }
+
+  public static void readAppend(String inputPath, String outputPath) {
+    String line;
+    FileWriter fileWriter;
+    BufferedReader bufferedReader;
+
+    try {
+      bufferedReader = new BufferedReader(new FileReader(inputPath));
+      fileWriter     = new FileWriter(outputPath, true);
+      line           = bufferedReader.readLine();
+
+      while (line != null) {
+        fileWriter.write(String.format("%s%n", line));
+
+        line = bufferedReader.readLine();
+      }
+
+      bufferedReader.close();
+      fileWriter.close();
+    } catch (IOException e) {
+      ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_APPENDING, e);
+    }
+    ConsoleLogger.logGreen(StringConstants.FINISHED_APPENDING(inputPath));
+  }
+
+  public static boolean readWrite(String inputPath, String outputPath, Modification modification) {
+    String line;
+    FileWriter fileWriter;
+    BufferedReader bufferedReader;
+
+    try {
+      bufferedReader = new BufferedReader(new FileReader(inputPath));
+      fileWriter     = new FileWriter(outputPath, true);
+      line           = bufferedReader.readLine();
+
+      while (line != null) {
+        fileWriter.write(String.format("%s%n", modification.applyTo(line)));
+
+        line = bufferedReader.readLine();
         }
 
-        return content.toString();
+      bufferedReader.close();
+      fileWriter.close();
+    } catch (IOException e) {
+      ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_REWRITING, e);
+      return false;
     }
+    return true;
+  }
 
-    public static void write(String path, String content) {
-        try {
-            FileWriter     fileWriter     = new FileWriter(path);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-            bufferedWriter.write(content);
-            bufferedWriter.close();
-
-            ConsoleLogger.logGreen(StringConstants.SUCCESS(path));
-
-        } catch (IOException e) {
-            ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_WRITING, e);
-        }
-    }
-
-    public static String readLine(String path, int skip) {
-        String line;
-
-        try {
-            FileReader     fileReader     = new FileReader(path);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-                  // Skip lines
-            for (int i = 0; i < skip; i++) {
-                bufferedReader.readLine();
-            }
-            
-            line = bufferedReader.readLine();
-
-            bufferedReader.close();
-
-        } catch (IOException e) {
-            ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_READING, e);
-            return null;
-        }
-        return line;
-    }
-
-    public static void writeLine(String path, String line) {
-        try {
-            FileWriter fileWriter = new FileWriter(path, true);
-
-            fileWriter.write(line);
-
-            fileWriter.close();
-            
-        } catch (IOException e) {
-            ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_WRITING, e);
-        }
-    }
-
-    public static void partitionFile(String fileName, String outputPath, int sizeOfChunk, PartitionUnit unit, String formatter) {
-        String fileNameWithoutExtension = fileName.replaceFirst(RegEx.FILE_EXTENSION, "");
-        String line;
-        String newFileName;
-        int newfileSize;
-        int fileCounter = 0;
-
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(ConfigConstants.INPUT_FOLDER + fileName))) {
-            line = bufferedReader.readLine();
-            while (line != null) {
-                newFileName = String.format(formatter, 
-                                            ConfigConstants.OUTPUT_FOLDER,
-                                            fileNameWithoutExtension, 
-                                            ++fileCounter, 
-                                            ConfigConstants.RESULT_EXTENSION);
-
-                try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(newFileName))) {
-                    newfileSize = 0;
-                    while (line != null) {
-                        byte[] bytes = (line + System.lineSeparator()).getBytes(ConfigConstants.DEFAULT_CHARSET);
-                        if (newfileSize + bytes.length > (unit.getBytes(sizeOfChunk))) {
-                            break;
-                        }
-                        outputStream.write(bytes);
-                        newfileSize += bytes.length;
-                        line         = bufferedReader.readLine();
-                    }
-                }
-            }
-        } catch (IOException e) {
-            ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_PARTITIONING, e);
-        }
-    }
-
-    public static void readAppend(String inputPath, String outputPath) {
-        String line;
-        FileWriter fileWriter;
-        BufferedReader bufferedReader;
-
-        try {
-            bufferedReader = new BufferedReader(new FileReader(inputPath));
-            fileWriter     = new FileWriter(outputPath, true);
-            line           = bufferedReader.readLine();
-            
-            while (line != null) {
-                fileWriter.write(String.format("%s%n", line));
-                
-                line = bufferedReader.readLine();
-            }
-
-            bufferedReader.close();
-            fileWriter.close();
-        } catch (IOException e) {
-            ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_APPENDING, e);
-        }
-        ConsoleLogger.logGreen(StringConstants.FINISHED_APPENDING(inputPath));
-    }
-
-    public static boolean readRemoveWrite(String inputPath, String outputPath, ModifierType type, ModifierOptions options) {
-        String line;
-        FileWriter fileWriter;
-        BufferedReader bufferedReader;
-
-        try {
-            bufferedReader = new BufferedReader(new FileReader(inputPath));
-            fileWriter     = new FileWriter(outputPath, true);
-            line           = bufferedReader.readLine();
-            
-            while (line != null) {
-                fileWriter.write(String.format("%s%n", type.modify(line, options)));
-                
-                line = bufferedReader.readLine();
-            }
-
-            bufferedReader.close();
-            fileWriter.close();
-        } catch (IOException e) {
-            ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_REWRITING, e);
-            return false;
-        }
-        return true;
-    }
-
-    private FileIO() {
-        throw new IllegalStateException(StringConstants.UTILITY_CLASS);
-    }
+  private FileIO() {
+    throw new IllegalStateException(StringConstants.UTILITY_CLASS);
+  }
 }

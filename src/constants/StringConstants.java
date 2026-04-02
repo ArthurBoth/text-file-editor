@@ -21,12 +21,11 @@ public class StringConstants {
         return String.format("[Difference %d in line %d]%n", index, line);
     }
 
-    public static String PARTITION_FORMATTER(long fileSize, long partitionSize) {
+    public static String PARTITION_NAME_FORMATTER(long fileSize, long partitionSize) {
         long numberOfChunks = (fileSize / partitionSize) + 1;
         int  digits         = String.valueOf(numberOfChunks).toCharArray().length;
         return String.format("%%s%%s-%%0%dd%%s", digits);  // 5 -> %s%s-%05d%s
     }
-    
     public static String SUCCESS(String outputPath) {
         return String.format("Success! The new file is in {%s}", outputPath);
     }

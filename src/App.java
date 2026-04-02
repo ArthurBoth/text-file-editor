@@ -1,29 +1,25 @@
+import io.fileSizes.FileSize;
 import modification.FileModifier;
-
-import static modification.ModifierType.TRANSCRIPTION;
-import static modification.ModifierType.CENSOR;
-import static modification.ModifierType.REPLACE_EXTENSION;
-import static modification.ModifierType.REMOVE_TIME;
-import static modification.ModifierType.REMOVE_ALL_DATE_TIME;
-import static modification.ModifierType.REPLACE_SEMICOLON_CSV_DELIMITER;
-
-import static io.PartitionUnit.KB;
-import static io.PartitionUnit.MB;
-import static io.PartitionUnit.GB;
+import modification.textModification.Modification;
 
 @SuppressWarnings("unused")
-public class App{
-    public static void main(String[] args) {
-        // FileModifier.modifyContentOfFile("example.txt", TRANSCRIPTION);
-        // FileModifier.modifyContentOfAllFiles(CENSOR);
-        // FileModifier.renameFile("example.txt", REPLACE_EXTENSION);
-        // FileModifier.renameFile("example.txt", "example.md");
-        // FileModifier.renameAllFiles(REPLACE_EXTENSION);
-        // FileModifier.compareFiles("example.txt", "example.md");
-        // FileModifier.partitionFile("example.txt", 10, KB);
-        // FileModifier.removeColumnsOfFile("example.csv", 10, 15);
-        // FileModifier.removeColumnsOfAllFiles(10, 15);
-        // FileModifier.appendFiles("output.txt", "example1.txt", "example2.txt");
-        // FileModifier.appendFilesAllFiles("output.txt");
-        }
+public class App {
+  public static void main(String[] args) {
+    // FileModifier.modifyContentOfFile("example.txt", Modification.transcription());
+    // FileModifier.modifyContentOfAllFiles(Modification.censor());
+    // FileModifier.modifyContentOfAllFiles(Modification.censor("Foo", "Bar", "Foo BAR"));
+    // FileModifier.renameFile("example.txt", Modification.replaceExtension());
+    // FileModifier.renameFile("example.txt", Modification.replaceExtensionWith(".csv"));
+    // FileModifier.renameFile("example.txt", "example.md");
+    // FileModifier.renameAllFiles(Modification.replaceExtension());
+    // FileModifier.renameAllFiles(Modification.replaceExtensionWith(".csv"));
+    // FileModifier.compareFiles("example.txt", "example.md");
+    // FileModifier.partitionFile("example.txt", FileSize.KB(10));
+    // FileModifier.appendFiles("output.txt", "example1.txt", "example2.txt");
+    // FileModifier.appendFilesAllFiles("output.txt");
+    // FileModifier.modifyContentOfFile("example.txt", Modification.replaceCsvDelimiter());
+    // FileModifier.modifyContentOfAllFiles(Modification.replaceCsvDelimiter(",").with(";"));
+
+
+  }
 }

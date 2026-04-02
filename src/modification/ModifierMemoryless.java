@@ -4,82 +4,54 @@ import constants.ConfigConstants;
 import constants.StringConstants;
 import io.ConsoleLogger;
 import io.FileIO;
+import modification.textModification.Modification;
 
-public class ModifierMemoryless extends Modifier {
-    public ModifierMemoryless() {}
+public class ModifierMemoryless implements IModifier {
+  @Override
+  public void modifyContentOfFile(String fileName, Modification type) {
+    String inputPath  = ConfigConstants.INPUT_FOLDER  + fileName;
+    String outputPath = ConfigConstants.OUTPUT_FOLDER + fileName;
 
-    @Override
-    public void modifyContentOfFile(String fileName, ModifierType type) {
-        String path    = ConfigConstants.INPUT_FOLDER  + fileName;
-        String newPath = ConfigConstants.OUTPUT_FOLDER + ModifierType.REPLACE_EXTENSION.modify(fileName);
+    if (FileIO.readWrite(inputPath, outputPath, type))
+      ConsoleLogger.logGreen(StringConstants.SUCCESS(outputPath));
+  }
 
-        readWrite(path, newPath, type);
-    }
+  public void compareFiles(String file1, String file2, boolean ignoreDateTime) {
+    String  inputPathFile1   = ConfigConstants.INPUT_FOLDER  + file1;
+    String  inputPathFile2   = ConfigConstants.INPUT_FOLDER  + file2;
+    String  outputPath       = ConfigConstants.OUTPUT_FOLDER + ConfigConstants.OUTPUT_FILE;
+    boolean foundDifference  = false;
+    int     differenceNumber = 0;
+    int     index            = 0;
+    String  line1            = FileIO.readLine(inputPathFile1, index);
+    String  line2            = FileIO.readLine(inputPathFile2, index);
 
-    private void readWrite(String inputPath, String outputPath, ModifierType type) {
-        int    index = 0;
-        String line  = FileIO.readLine(inputPath, index++);
+    while ((line1 != null) && (line2 != null)) {
+      if (ignoreDateTime) {
+        line1 = Modification.removeDateTime().applyTo(line1);
+        line2 = Modification.removeDateTime().applyTo(line2);
+      }
 
-        if (line == null) {
-            ConsoleLogger.log(StringConstants.EMPTY_FILE);
-            return;
+      if (!(line1.equals(line2))) {
+        if (!foundDifference) {
+          FileIO.writeLine(outputPath, String.format("%s vs %s%n", inputPathFile1, inputPathFile2));
         }
-        
-        while (line != null) {
-            line = FileIO.readLine(inputPath, index++);
-            line = String.format("%s%n", type.modify(line));
-            FileIO.writeLine(outputPath, line);
-        }
-        ConsoleLogger.logGreen(StringConstants.SUCCESS(outputPath));
+        foundDifference = true;
+        ConsoleLogger.log(String.format("%s %d", StringConstants.DIFFERENCE_FOUND_LINE, index));
+        FileIO.writeLine(outputPath, StringConstants.FILE_DIFFERENCE(++differenceNumber, index));
+        FileIO.writeLine(outputPath, String.format("%s%n", line1));
+        FileIO.writeLine(outputPath, String.format("%s%n", line2));
+      }
+
+      index++;
+      line1 = FileIO.readLine(inputPathFile1, index);
+      line2 = FileIO.readLine(inputPathFile2, index);
     }
 
-    public void compareFiles(String file1, String file2, boolean ignoreDateTime) {
-        String inputPathFile1 = ConfigConstants.INPUT_FOLDER  + file1;
-        String inputPathFile2 = ConfigConstants.INPUT_FOLDER  + file2;
-        String outputPath     = ConfigConstants.OUTPUT_FOLDER + ConfigConstants.OUTPUT_FILE;
-
-        compareFiles(inputPathFile1, inputPathFile2, outputPath, ignoreDateTime);
+    if (foundDifference) {
+      ConsoleLogger.log(String.format("%s {%s}", StringConstants.DIFFERENCE_FOUND__OUTPUT_FILE, outputPath));
+    } else {
+      ConsoleLogger.logGreen(StringConstants.NO_DIFFERENCE_FOUND);
     }
-    
-    private void compareFiles(String inputPath1, String inputPath2, String outputPath, boolean ignoreDateTime) {
-        boolean foundDifference  = false;
-        int     differenceNumber = 0;
-        int     index            = 0;
-        String  line1            = FileIO.readLine(inputPath1, index);
-        String  line2            = FileIO.readLine(inputPath2, index);
-
-        while ((line1 != null) && (line2 != null)) {
-            if (ignoreDateTime) {
-                line1 = ModifierType.REMOVE_ALL_DATE_TIME.modify(line1);
-                line2 = ModifierType.REMOVE_ALL_DATE_TIME.modify(line2);
-            }
-
-            if (!(line1.equals(line2))) {
-                foundDifference = true;
-                ConsoleLogger.log(String.format("%s %d", StringConstants.DIFFERENCE_FOUND_LINE, index));
-                FileIO.writeLine(outputPath, StringConstants.FILE_DIFFERENCE(++differenceNumber, index));
-                FileIO.writeLine(outputPath, String.format("%s%n",line1));
-                FileIO.writeLine(outputPath, String.format("%s%n",line2));
-            }
-            
-            index++;
-            line1 = FileIO.readLine(inputPath1, index);
-            line2 = FileIO.readLine(inputPath2, index);
-        }
-
-        if (foundDifference) {
-            ConsoleLogger.log(String.format("%s {%s}", StringConstants.DIFFERENCE_FOUND__OUTPUT_FILE, outputPath));
-        } else {
-            ConsoleLogger.logGreen(StringConstants.NO_DIFFERENCE_FOUND);
-        }
-    }
-
-    public void removeColumns(String fileName, int[] columns) {
-        String          inputPath  = ConfigConstants.INPUT_FOLDER  + fileName;
-        String          outputPath = ConfigConstants.OUTPUT_FOLDER + ModifierType.REPLACE_EXTENSION.modify(fileName);
-        ModifierOptions options    = ModifierOptions.options().numeric(columns).build();
-
-        if (FileIO.readRemoveWrite(inputPath, outputPath, ModifierType.REMOVE_CSV_COLUMNS, options))
-            ConsoleLogger.logGreen(StringConstants.SUCCESS(outputPath));
-    }
+  }
 }
