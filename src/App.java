@@ -18,7 +18,9 @@ public class App {
     // FileModifier.appendFiles("output.txt", "example1.txt", "example2.txt");
     // FileModifier.appendFilesAllFiles("output.txt");
     // FileModifier.modifyContentOfFile("example.txt", Modification.replaceCsvDelimiter());
-    // FileModifier.modifyContentOfAllFiles(Modification.replaceCsvDelimiter(",").with(";"));
+    // FileModifier.modifyContentOfAllFiles(Modification.replaceCsvDelimiter(',').with(';'));
+    // FileModifier.modifyContentOfFile("example.txt", Modification.removeColumns(1, 5, 6));
+    // FileModifier.modifyContentOfFile("example.txt", Modification.removeColumns(1, 5, 6).usingAsDelimiter('|'));
 
 
   }

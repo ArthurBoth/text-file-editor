@@ -17,8 +17,15 @@ public interface Modification {
     return new ReplaceCsvDelimiter(ConfigConstants.CSV_CURRENT_SEPARATOR, ConfigConstants.CSV_NEW_SEPARATOR);
   }
 
-  static ReplaceCsvDelimiter.Builder replaceCsvDelimiter(String delimiter) {
+  static ReplaceCsvDelimiter.Builder replaceCsvDelimiter(char delimiter) {
     return new ReplaceCsvDelimiter.Builder(delimiter);
+  }
+
+  static ReplaceCsvDelimiter.Builder replaceCsvDelimiter(String delimiter) {
+    if (delimiter.length() != 1) {
+      throw new IllegalArgumentException("Delimiter must be a single character");
+    }
+    return new ReplaceCsvDelimiter.Builder(delimiter.charAt(0));
   }
 
   static Transcription transcription() {
@@ -62,6 +69,6 @@ public interface Modification {
     for (Integer i : columns) {
       set.add(i);
     }
-    return new RemoveCsvColumns(set);
+    return new RemoveCsvColumns(ConfigConstants.CSV_CURRENT_SEPARATOR, set);
   }
 }

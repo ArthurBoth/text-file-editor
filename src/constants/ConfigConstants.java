@@ -28,9 +28,9 @@ public class ConfigConstants {
   public static final boolean PRINT_LOGS = true;
 
   // CSV configurations
-  public static final String CSV_CURRENT_SEPARATOR = ",";
-  public static final String CSV_PIVOT_SEPARATOR   = ".";
-  public static final String CSV_NEW_SEPARATOR     = ";";
+  public static final char CSV_CURRENT_SEPARATOR = ',';
+  public static final char CSV_PIVOT_SEPARATOR   = '.';
+  public static final char CSV_NEW_SEPARATOR     = ';';
 
   private ConfigConstants() {
     throw new IllegalStateException(StringConstants.UTILITY_CLASS);
