@@ -1,17 +1,36 @@
 package modification.textModification;
 
-import constants.RegEx;
-
 public class ReplaceFileExtension implements Modification {
+  private final String oldExtension;
   private final String newExtension;
 
-  public ReplaceFileExtension(String newExtension) {
+  public ReplaceFileExtension(String oldExtension, String newExtension) {
     this.newExtension = newExtension;
+    this.oldExtension = oldExtension;
+  }
+
+  private ReplaceFileExtension(Builder builder) {
+    this.newExtension = builder.newExtension;
+    this.oldExtension = builder.oldExtension;
   }
 
   @Override
   public String applyTo(String text) {
-    text = text.replaceFirst(RegEx.FILE_EXTENSION, "");
-    return String.format("%s%s", text, this.newExtension);
+    return text.replaceFirst(this.oldExtension, this.newExtension);
+  }
+
+  public static class Builder {
+    private String oldExtension;
+    private String newExtension;
+
+    public ReplaceFileExtension with(String newExtension) {
+      this.newExtension = newExtension;
+      return new ReplaceFileExtension(this);
+    }
+
+    public Builder (String oldExtension) {
+      this.oldExtension = oldExtension;
+      this.newExtension = "";
+    }
   }
 }

@@ -9,8 +9,8 @@ import constants.RegEx;
 public interface Modification {
   String applyTo(String text);
 
-  default Modification andThen(Modification other) {
-    return text -> other.applyTo(this.applyTo(text));
+  default Modification andThen(Modification next) {
+    return text -> next.applyTo(this.applyTo(text));
   }
 
   static ReplaceCsvDelimiter replaceCsvDelimiter() {
@@ -45,11 +45,29 @@ public interface Modification {
   }
 
   static ReplaceFileExtension replaceExtension() {
-    return new ReplaceFileExtension(ConfigConstants.RESULT_EXTENSION);
+    return new ReplaceFileExtension(RegEx.FILE_EXTENSION, ConfigConstants.RESULT_EXTENSION);
+  }
+
+  static ReplaceFileExtension.Builder replaceExtension(String extension) {
+    String regex = extension;
+    if (!extension.startsWith(".")) {
+      regex = "." + extension;
+    }
+    if (!extension.endsWith("$")) {
+      regex = regex + "$";
+    }
+    return new ReplaceFileExtension.Builder(regex);
   }
 
   static ReplaceFileExtension replaceExtensionWith(String extension) {
-    return new ReplaceFileExtension(extension);
+    String regex = extension;
+    if (!extension.startsWith(".")) {
+      regex = "." + extension;
+    }
+    if (!extension.endsWith("$")) {
+      regex = regex + "$";
+    }
+    return new ReplaceFileExtension(RegEx.FILE_EXTENSION, regex);
   }
 
   static RemoveTime removeTime() {

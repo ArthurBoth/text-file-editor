@@ -20,9 +20,4 @@ public class ModifierMemory implements IModifier {
 
     FileIO.write(newPath, text);
   }
-
-  @Override
-  public void compareFiles(String file1, String file2, boolean ignoreDateTime) {
-    throw new UnsupportedOperationException("Unimplemented method 'compareFiles'");
-  }
 }

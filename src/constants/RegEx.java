@@ -7,7 +7,7 @@ public class RegEx {
   public static final String MULTIPLE_EMPTY_LINES = "(\r?\n){2,}";
   public static final String SINGLE_NUMBER        = "^\\d+$";
   public static final String REGEX_BOUNDARY       = "\\b";
-  public static final String FILE_EXTENSION       = "\\.\\w{1,4}$";
+  public static final String FILE_EXTENSION       = "\\.\\w+$";
   public static final String TIME_ISO8601         = "\\d{2}:\\d{2}:\\d{2}[.,]\\d{3}";
   public static final String DATE_ISO8601         = "\\d{2}\\/\\d{2}\\/\\d{4}";
 

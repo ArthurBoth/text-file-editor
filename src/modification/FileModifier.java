@@ -1,12 +1,16 @@
 package modification;
 
 import constants.StringConstants;
+import io.ConsoleLogger;
 import io.FileIO;
 import io.fileSizes.FileSize;
 import modification.textModification.Modification;
 import constants.ConfigConstants;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 
 public abstract class FileModifier {
@@ -30,14 +34,7 @@ public abstract class FileModifier {
   }
 
   public static void modifyContentOfAllFiles(Modification type) {
-    File   folder = new File(ConfigConstants.INPUT_FOLDER);
-    File[] files  = folder.listFiles();
-
-    for (File file : files) {
-      if (file.isFile()) {
-        modifyContentOfFile(file.getName(), type, ConfigConstants.DEFAULT_MEMORYLESS_OPERATION_MODIFY_CONTENT);
-      }
-    }
+    modifyContentOfAllFiles(type, ConfigConstants.DEFAULT_MEMORYLESS_OPERATION_MODIFY_CONTENT);
   }
 
   public static void modifyContentOfAllFiles(Modification type, boolean memorylessOperations) {
@@ -58,21 +55,18 @@ public abstract class FileModifier {
       return; // Skips the '.gitkeep' file
     verifyFolders();
 
-    File oldFile = new File(ConfigConstants.INPUT_FOLDER  + oldName);
-    File newFile = new File(ConfigConstants.OUTPUT_FOLDER + newName);
+    Path oldFile = Path.of(ConfigConstants.INPUT_FOLDER  + oldName);
+    Path newFile = Path.of(ConfigConstants.OUTPUT_FOLDER + newName);
 
-    oldFile.renameTo(newFile);
+    try {
+      Files.copy(oldFile, newFile);
+    } catch (IOException e) {
+      ConsoleLogger.logError(StringConstants.ERROR_MSG + StringConstants.WHEN_COPYING, e);
+    }
   }
 
   public static void renameFile(String fileName, Modification modification) {
-    if (fileName.equals(ConfigConstants.GIT_KEEP))
-      return; // Skips the '.gitkeep' file
-    verifyFolders();
-
-    File oldFile = new File(ConfigConstants.INPUT_FOLDER  + fileName);
-    File newFile = new File(ConfigConstants.OUTPUT_FOLDER + modification.applyTo(fileName));
-
-    oldFile.renameTo(newFile);
+    renameFile(fileName, modification.applyTo(fileName));
   }
 
   public static void renameAllFiles(Modification modification) {
@@ -86,27 +80,18 @@ public abstract class FileModifier {
     }
   }
 
-  public static void compareFiles(String file1, String file2, boolean memorylessOperation, boolean ignoreDateTime) {
+  public static void compareFiles(String file1, String file2) {
     if (file1.equals(ConfigConstants.GIT_KEEP))
       return; // Skips the '.gitkeep' file
     if (file2.equals(ConfigConstants.GIT_KEEP))
       return; // Skips the '.gitkeep' file
     verifyFolders();
 
-    if (memorylessOperation) {
-      memoryless.compareFiles(file1, file2, ignoreDateTime);
-    } else {
-      memory.compareFiles(file1, file2, ignoreDateTime);
-    }
-  }
+    String inputPathFile1 = ConfigConstants.INPUT_FOLDER  + file1;
+    String inputPathFile2 = ConfigConstants.INPUT_FOLDER  + file2;
+    String outputPath     = ConfigConstants.OUTPUT_FOLDER + ConfigConstants.OUTPUT_FILE;
 
-  public static void compareFiles(String file1, String file2, boolean memorylessOperation) {
-    compareFiles(file1, file2, memorylessOperation, ConfigConstants.DEFAULT_IGNORE_DATE_TIME_WHEN_COMPARING_FILES);
-  }
-
-  public static void compareFiles(String file1, String file2) {
-    compareFiles(file1, file2, ConfigConstants.DEFAULT_MEMORYLESS_OPERATION_COMPARE_FILES,
-        ConfigConstants.DEFAULT_IGNORE_DATE_TIME_WHEN_COMPARING_FILES);
+    FileIO.compareFiles(inputPathFile1, inputPathFile2, outputPath);
   }
 
   private static void verifyFolders() {
